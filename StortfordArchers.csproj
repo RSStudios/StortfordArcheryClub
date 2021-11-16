@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\assets\ArcheryGB_d200.png" />
     <None Include="wwwroot\assets\BowArrow.gif" />
     <None Include="wwwroot\assets\haa-transparent_d200.png" />
