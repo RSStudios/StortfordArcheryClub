@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\ArcheryGB_d200.png" />
+    <None Include="wwwroot\assets\BowArrow.gif" />
+    <None Include="wwwroot\assets\haa-transparent_d200.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="Piranha" Version="9.2.0" />
+    <PackageReference Include="Piranha.AspNetCore" Version="9.2.0" />
+    <PackageReference Include="Piranha.AspNetCore.Identity.SQLServer" Version="9.2.0" />
+    <PackageReference Include="Piranha.AttributeBuilder" Version="9.2.0" />
+    <PackageReference Include="Piranha.Data.EF.SQLServer" Version="9.2.0" />
+    <PackageReference Include="Piranha.ImageSharp" Version="9.2.0" />
+    <PackageReference Include="Piranha.Local.FileStorage" Version="9.2.0" />
+    <PackageReference Include="Piranha.Manager" Version="9.2.0" />
+    <PackageReference Include="Piranha.Manager.LocalAuth" Version="9.2.0" />
+    <PackageReference Include="Piranha.Manager.TinyMCE" Version="9.2.0" />
+  </ItemGroup>
+
+</Project>

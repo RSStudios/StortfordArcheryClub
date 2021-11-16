@@ -1,0 +1,95 @@
+@using StortfordArchers.Models
+@model ContactPage
+
+@{
+    ViewBag.Title = "CONTACT";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10">
+            <h1 class="display-3">CONTACT</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10">
+            Stortford Archery Club
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+            Club meets at:
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10">
+            St Mary's Catholic School
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10">
+            Windhill
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10">
+            Bishop's Stortford
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10">
+            CM23 2NQ
+        </div>
+    </div>
+
+    <form method="post">
+        <div class="row">
+            <div class="col-sm-2">
+                <label asp-for="Name"></label>
+            </div>
+            <div class="col-sm-8">
+                <input asp-for="Name" placeholder="Enter name" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label asp-for="Phone"></label>
+            </div>
+            <div class="col-sm-8">
+                <input asp-for="Phone" placeholder="Enter name" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label asp-for="Subject"></label>
+            </div>
+            <div class="col-sm-8">
+                <input asp-for="Subject" placeholder="Enter name" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label asp-for="Email"></label>
+            </div>
+            <div class="col-sm-8">
+                <input asp-for="Email" placeholder="Enter name" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label asp-for="Message"></label>
+            </div>
+            <div class="col-sm-8">
+                <input asp-for="Message" placeholder="Enter name" />
+            </div>
+        </div>
+        <button asp-controller="Cms" asp-action="Contact">Submit</button>
+    </form>
+
+    <div class="row">
+        <div class="col-sm-10">
+            <label>@Model.Response</label>
+        </div>
+       
+    </div>
+</div>

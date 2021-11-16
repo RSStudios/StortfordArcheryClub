@@ -1,0 +1,16 @@
+﻿@model StortfordArchers.Blocks.CardBlock
+
+<div class="row">
+    <div class="col-4">
+        @if (Model.ImgBody.HasValue)
+        {
+            <div style="width: 100px;">
+                <img src="@Url.Content(Model.ImgBody)" />
+            </div>
+        }
+    </div>
+
+    <div class="col-8">
+        @Html.Raw(Model.HtmlBody)
+    </div>
+</div>
