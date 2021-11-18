@@ -1,5 +1,6 @@
 body {
     padding-top: 3.5rem;
+    height: 100%;
 }
 main {
     padding: 2rem 0;
@@ -14,5 +15,21 @@ a {
     &:hover {
         color: darken(#f94c3b, 10%);
     }
+}
+#page-container {
+    /* https: //www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c/ */
+    position: relative;
+    min-height: 100vh;
+}
+
+#wrapper {
+    padding-bottom: 2.5rem; /* footer height */
+}
+.clearfix::after {
+    content: "";
+    clear: both;
+}
+main {
+    flex: 1;
 }
 
