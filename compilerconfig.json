@@ -1,6 +1,10 @@
-[
+﻿[
   {
     "outputFile": "wwwroot/assets/css/style.css",
     "inputFile": "assets/scss/style.scss"
+  },
+  {
+    "outputFile": "assets/scss/inc/_type.css",
+    "inputFile": "assets/scss/inc/_type.scss"
   }
 ]

@@ -5,11 +5,13 @@
     ViewBag.Title = "CONTACT";
 }
 <div class="container">
+    
     <div class="row">
         <div class="col-sm-10">
             <h1 class="display-3">CONTACT</h1>
         </div>
     </div>
+    <div style="float:left">
     <div class="row">
         <div class="col-sm-10">
             Stortford Archery Club
@@ -41,55 +43,78 @@
             CM23 2NQ
         </div>
     </div>
-
+    <div class="row medium-bottom-padding">
+        <div class="col-sm-10">
+            Please note this is NOT a postal address, but only where we shoot.
+        </div>
+    </div>
+    </div>
+    <div style="float:left;" class="medium-left-padding">
+        
+            <div class="mapouter">
+                <div class="gmap_canvas">
+                    <iframe width="400" height="300" id="gmap_canvas" src="https://maps.google.com/maps?q=Windhill,%20Bishops%20Stortord,CM23%202NQ&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="5"></iframe>
+                
+                    <style>.mapouter{position:relative;text-align:right;height:300px;width:400px;}</style>
+                    <style>.gmap_canvas {overflow:hidden;background:none!important;height:300px;width:400px;}</style>
+                </div>
+                </div>
+      
+    </div>
+    <div class="clearfix"></div>
     <form method="post">
-        <div class="row">
+        <div class="row small-bottom-padding medium-top-margin">
             <div class="col-sm-2">
                 <label asp-for="Name"></label>
             </div>
             <div class="col-sm-8">
-                <input asp-for="Name" placeholder="Enter name" />
+                <input asp-for="Name" style="width:250px;" placeholder="Enter name" />
             </div>
         </div>
-        <div class="row">
+        <div class="row small-bottom-padding">
             <div class="col-sm-2">
                 <label asp-for="Phone"></label>
             </div>
             <div class="col-sm-8">
-                <input asp-for="Phone" placeholder="Enter name" />
+                <input asp-for="Phone" style="width:250px;" placeholder="Enter phone number" />
             </div>
         </div>
-        <div class="row">
+        <div class="row small-bottom-padding">
             <div class="col-sm-2">
                 <label asp-for="Subject"></label>
             </div>
-            <div class="col-sm-8">
-                <input asp-for="Subject" placeholder="Enter name" />
+            <div class="col-sm-8 small-bottom-padding">
+                <input asp-for="Subject" style="width:250px;" placeholder="Enter a subject" />
             </div>
         </div>
-        <div class="row">
+        <div class="row small-bottom-padding">
             <div class="col-sm-2">
                 <label asp-for="Email"></label>
             </div>
             <div class="col-sm-8">
-                <input asp-for="Email" placeholder="Enter name" />
+                <input asp-for="Email" style="width:250px;" placeholder="Enter an email address" />
             </div>
         </div>
-        <div class="row">
+        <div class="row small-bottom-padding">
             <div class="col-sm-2">
                 <label asp-for="Message"></label>
             </div>
             <div class="col-sm-8">
-                <input asp-for="Message" placeholder="Enter name" />
+                <textarea asp-for="Message" style="width:250px;height:150px;" placeholder="Enter a message"></textarea>
             </div>
         </div>
-        <button asp-controller="Cms" asp-action="Contact">Submit</button>
+        <button class="button" asp-controller="Cms" asp-action="Contact">Submit</button>
     </form>
-
-    <div class="row">
-        <div class="col-sm-10">
-            <label>@Model.Response</label>
+    <div class="row small-bottom-padding">
+        <div class="col-sm-10" style="color: #006400; margin-top:10px;">
+            In contacting the club you agree to the terms of the clubs GDPR policy.
+            A link to which can be found at the bottom of this page.
+            </div>
         </div>
-       
-    </div>
-</div>
+            <div class="row small-bottom-padding">
+                <div class="col-sm-10">
+                    <label>@Model.Response</label>
+                </div>
+
+            </div>
+        </div>
