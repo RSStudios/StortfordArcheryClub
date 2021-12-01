@@ -74,7 +74,7 @@ namespace StortfordArchers
                 options.LoginUrl = "login";
                  */
             });
-            //services.AddPiranhaFileStorage();
+          //  services.AddPiranhaFileStorage();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
