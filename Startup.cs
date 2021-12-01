@@ -41,7 +41,7 @@ namespace StortfordArchers
                  * enabled in production.
                  */
                 options.AddRazorRuntimeCompilation = true;
-
+                options.UseCms();
                 options.UseFileStorage(naming: Piranha.Local.FileStorageNaming.UniqueFolderNames);
                 options.UseImageSharp();
                 options.UseManager();
@@ -74,6 +74,7 @@ namespace StortfordArchers
                 options.LoginUrl = "login";
                  */
             });
+            //services.AddPiranhaFileStorage();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +89,7 @@ namespace StortfordArchers
             App.Init(api);
             App.Blocks.Register<StortfordArchers.Blocks.CardBlock>();
             App.Blocks.Register<StortfordArchers.Blocks.TextWithImageBlock>();
+            App.Blocks.Register<StortfordArchers.Blocks.TextWithFileBlock>();
             App.Modules.Manager().Scripts.Add("~/js/custom-blocks.js");
             App.Modules.Manager().Styles.Add("~/assets/css/custom-blocks.css");
 

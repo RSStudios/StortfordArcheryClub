@@ -11,7 +11,7 @@ namespace StortfordArchers.Models
     public class CommitteeDetailsPage : Page<CommitteeDetailsPage>
     {
         [Region(Title = "The committee")]
-        [RegionDescription("committee member details")]
+       // [RegionDescription("committee member details")]
         //public CommitteeDetails CommitteeDetails {get; set;}
         public IList<CommitteeDetails> CommitteeDetails { get; set; } = new List<CommitteeDetails>();
 
