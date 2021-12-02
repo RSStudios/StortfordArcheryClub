@@ -89,7 +89,7 @@ namespace StortfordArchers
             App.Init(api);
             App.Blocks.Register<StortfordArchers.Blocks.CardBlock>();
             App.Blocks.Register<StortfordArchers.Blocks.TextWithImageBlock>();
-            App.Blocks.Register<StortfordArchers.Blocks.TextWithFileBlock>();
+            //App.Blocks.Register<StortfordArchers.Blocks.TextWithFileBlock>();
             App.Modules.Manager().Scripts.Add("~/js/custom-blocks.js");
             App.Modules.Manager().Styles.Add("~/assets/css/custom-blocks.css");
 

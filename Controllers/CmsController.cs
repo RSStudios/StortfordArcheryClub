@@ -6,6 +6,8 @@ using Piranha.AspNetCore.Services;
 using Piranha.Models;
 using StortfordArchers.Models;
 using System.Linq;
+using System.Data;
+using ClosedXML.Excel;
 
 namespace StortfordArchers.Controllers
 {
@@ -200,6 +202,66 @@ namespace StortfordArchers.Controllers
             //}
 
             return View("~/Views/Cms/ContactPage.cshtml", data);
+        }
+          
+        [Route("/TabularPage")]
+        public async Task<IActionResult> TabularPage(Guid id)
+        {
+            var model = await _api.Pages.GetByIdAsync<PageWithTable>(id);
+
+            string filePath = @"D:\SAC\LongbowLadies.xlsx";
+
+            using (XLWorkbook workBook = new XLWorkbook(filePath))
+            {
+                //Read the first Sheet from Excel file.
+                IXLWorksheet workSheet = workBook.Worksheet(1);
+
+                //Create a new DataTable.
+                DataTable dt = new DataTable();
+                model.TableData = "<html><body><table>";
+
+                //Loop through the Worksheet rows.
+                bool firstRow = true;
+                int cellcount;
+                foreach (IXLRow row in workSheet.Rows())
+                {
+                    //Use the first row to add columns to DataTable.
+                    if (firstRow)
+                    {
+                        cellcount = row.Cells().Count();
+                        model.TableData += "<tr>";
+                        foreach (IXLCell cell in row.Cells())
+                        {
+                            for (int i = 0; i < cellcount; i++)
+                            {
+                                model.TableData += "<td>" + cell.Value + "</td>";
+                            }
+                          //  dt.Columns.Add(cell.Value.ToString());
+                        }
+                        model.TableData += "</tr>";
+                        firstRow = false;
+                    }
+                    else
+                    {
+                        //Add rows to DataTable.
+                        //  dt.Rows.Add();
+                        model.TableData += "<tr>";
+                        int i = 0;
+                        foreach (IXLCell cell in row.Cells())
+                        {
+                           // dt.Rows[dt.Rows.Count - 1][i] = cell.Value.ToString();
+                            model.TableData += "<td>" + cell.Value.ToString() + "</td>";
+                            i++;
+                        }
+                        model.TableData += "</tr>";
+                    }
+
+                  //  dataGridView1.DataSource = dt;
+                }
+            }
+        
+
+            return View("~/Views/Cms/PageWithTable.cshtml", model);
         }
     }
 }
