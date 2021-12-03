@@ -43,11 +43,14 @@ else
   
      @foreach (var block in Model.Blocks)
     {
-        <div class="block @block.CssName()">
-            <div class="container">
+        if (block.Type != "StortfordArchers.Blocks.ExcelBlock")
+        {
+            <div class="block @block.CssName()">
+                <div class="container">
                 @Html.DisplayFor(m => block, block.GetType().Name)
             </div>
         </div>
+        }
     }
  </main>   
 

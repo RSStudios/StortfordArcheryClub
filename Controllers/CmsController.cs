@@ -8,6 +8,9 @@ using StortfordArchers.Models;
 using System.Linq;
 using System.Data;
 using ClosedXML.Excel;
+using StortfordArchers.Blocks;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace StortfordArchers.Controllers
 {
@@ -16,15 +19,17 @@ namespace StortfordArchers.Controllers
     {
         private readonly IApi _api;
         private readonly IModelLoader _loader;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="api">The current api</param>
-        public CmsController(IApi api, IModelLoader loader)
+        public CmsController(IApi api, IModelLoader loader, IWebHostEnvironment webHostEnvironment)
         {
             _api = api;
             _loader = loader;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         /// <summary>
@@ -131,36 +136,6 @@ namespace StortfordArchers.Controllers
             }
         }
 
-        [Route("CommitteeDetails")]
-        public async Task<IActionResult> CommitteeDetails(Guid id)
-        {
-            var committeeDetails = await _api.Pages.GetByIdAsync<CommitteeDetailsPage>(id);
-
-            var model = new CommitteeDetailsViewModel
-            {
-                CommitteeDetailsPage = committeeDetails,
-                CommitteeDetails = (await _api.Sites.GetSitemapAsync())
-                .SelectMany(item => item.Items)
-                .Select(item =>
-                {
-                    var page = _api.Pages.GetByIdAsync<CommitteeDetailsPage>
-                    (item.Id).Result;
-
-                    var ci = new CommitteeDetailsItem
-                    {
-                        Role = page.CommitteeDetails[0].Role,
-                        MemberName = page.CommitteeDetails[0].MemberName,
-                        Email = page.CommitteeDetails[0].Email,
-                        PageUrl = page.Permalink
-
-                    };
-                    return ci;
-                })
-            };
-            return View(model);
-
-
-        }
 
         [Route ("/Contact")]
         public async Task<IActionResult> Contact(Guid id)
@@ -209,61 +184,80 @@ namespace StortfordArchers.Controllers
         {
             var model = await _api.Pages.GetByIdAsync<PageWithTable>(id);
 
-            string filePath = @"D:\SAC\LongbowLadies.xlsx";
+           
 
-            using (XLWorkbook workBook = new XLWorkbook(filePath))
+            foreach (var item in model.Blocks)
             {
-                //Read the first Sheet from Excel file.
-                IXLWorksheet workSheet = workBook.Worksheet(1);
-
-                //Create a new DataTable.
-              //  DataTable dt = new DataTable();
-                model.TableData = "<table style=\"width:100%\" class=\"tabularContainer\">";
-
-                //Loop through the Worksheet rows.
-                bool firstRow = true;
-                int cellcount;
-                foreach (IXLRow row in workSheet.Rows())
+                if (item.Type == "StortfordArchers.Blocks.ExcelBlock")
                 {
-                    //Use the first row to add column headings to  the Table.
-                    if (firstRow)
-                    {
-                        cellcount = row.Cells().Count();
-                        model.TableData += "<thead><tr>";
-                        foreach (IXLCell cell in row.Cells())
-                        {
-                                model.TableData += "<th>" + cell.Value + "</th>";
+                    Guid guid = item.Id;         //@"D:\SAC\LongbowLadies.xlsx";
                          
-                        }
-                        model.TableData += "</tr></thead><tbody>";
-                        firstRow = false;
-                    }
-                    else
+                    var test = (ExcelBlock)item;
+                    var url = test.Upload.Media.PublicUrl.Substring(1).Replace(@"/",@"\");
+
+                    string webRootPath = _webHostEnvironment.WebRootPath;
+                   // string contentRootPath = _webHostEnvironment.ContentRootPath;
+
+                    string path = "";
+                    path = webRootPath + url;
+                    using (XLWorkbook workBook = new XLWorkbook(path))
                     {
-                     
-                        model.TableData += "<tr>";
-                        int i = 0;
-                        foreach (IXLCell cell in row.Cells())
+                        //Read the first Sheet from Excel file.
+                        IXLWorksheet workSheet = workBook.Worksheet(1);
+
+                        //Create a new DataTable.
+                        //  DataTable dt = new DataTable();
+                        model.TableData = "<table style=\"width:100%\" class=\"tabularContainer\">";
+
+                        //Loop through the Worksheet rows.
+                        bool firstRow = true;
+                        int cellcount;
+                        foreach (IXLRow row in workSheet.Rows())
                         {
-                            DateTime result;
-                            if (DateTime.TryParse(cell.Value.ToString(), out result))
+                            //Use the first row to add column headings to  the Table.
+                            if (firstRow)
                             {
-                                model.TableData += "<td>" + result.ToString("dd/MM/yyyy") + "</td>";
+                                cellcount = row.Cells().Count();
+                                model.TableData += "<thead><tr>";
+                                foreach (IXLCell cell in row.Cells())
+                                {
+                                    model.TableData += "<th>" + cell.Value + "</th>";
+
+                                }
+                                model.TableData += "</tr></thead><tbody>";
+                                firstRow = false;
                             }
                             else
                             {
-                                model.TableData += "<td>" + cell.Value.ToString() + "</td>";
+
+                                model.TableData += "<tr>";
+                                int i = 0;
+                                foreach (IXLCell cell in row.Cells())
+                                {
+                                    DateTime result;
+                                    if (DateTime.TryParse(cell.Value.ToString(), out result))
+                                    {
+                                        model.TableData += "<td>" + result.ToString("dd/MM/yyyy") + "</td>";
+                                    }
+                                    else
+                                    {
+                                        model.TableData += "<td>" + cell.Value.ToString() + "</td>";
+                                    }
+                                    i++;
+                                }
+                                model.TableData += "</tr>";
                             }
-                            i++;
+
+
                         }
-                        model.TableData += "</tr>";
+                        model.TableData += "</tbody></table>";
                     }
 
-                  
                 }
-                model.TableData += "</tbody></table>";
             }
-        
+           
+
+            
 
             return View("~/Views/Cms/PageWithTable.cshtml", model);
         }

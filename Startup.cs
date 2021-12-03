@@ -89,9 +89,10 @@ namespace StortfordArchers
             App.Init(api);
             App.Blocks.Register<StortfordArchers.Blocks.CardBlock>();
             App.Blocks.Register<StortfordArchers.Blocks.TextWithImageBlock>();
-            //App.Blocks.Register<StortfordArchers.Blocks.TextWithFileBlock>();
+            App.Blocks.Register<StortfordArchers.Blocks.ExcelBlock>();
             App.Modules.Manager().Scripts.Add("~/js/custom-blocks.js");
             App.Modules.Manager().Styles.Add("~/assets/css/custom-blocks.css");
+            App.MediaTypes.Documents.Add(".xlsx", "application/vnd.ms-excel");
 
             // Build content types
             new ContentTypeBuilder(api)
