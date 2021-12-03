@@ -217,47 +217,51 @@ namespace StortfordArchers.Controllers
                 IXLWorksheet workSheet = workBook.Worksheet(1);
 
                 //Create a new DataTable.
-                DataTable dt = new DataTable();
-                model.TableData = "<html><body><table>";
+              //  DataTable dt = new DataTable();
+                model.TableData = "<table style=\"width:100%\" class=\"tabularContainer\">";
 
                 //Loop through the Worksheet rows.
                 bool firstRow = true;
                 int cellcount;
                 foreach (IXLRow row in workSheet.Rows())
                 {
-                    //Use the first row to add columns to DataTable.
+                    //Use the first row to add column headings to  the Table.
                     if (firstRow)
                     {
                         cellcount = row.Cells().Count();
-                        model.TableData += "<tr>";
+                        model.TableData += "<thead><tr>";
                         foreach (IXLCell cell in row.Cells())
                         {
-                            for (int i = 0; i < cellcount; i++)
-                            {
-                                model.TableData += "<td>" + cell.Value + "</td>";
-                            }
-                          //  dt.Columns.Add(cell.Value.ToString());
+                                model.TableData += "<th>" + cell.Value + "</th>";
+                         
                         }
-                        model.TableData += "</tr>";
+                        model.TableData += "</tr></thead><tbody>";
                         firstRow = false;
                     }
                     else
                     {
-                        //Add rows to DataTable.
-                        //  dt.Rows.Add();
+                     
                         model.TableData += "<tr>";
                         int i = 0;
                         foreach (IXLCell cell in row.Cells())
                         {
-                           // dt.Rows[dt.Rows.Count - 1][i] = cell.Value.ToString();
-                            model.TableData += "<td>" + cell.Value.ToString() + "</td>";
+                            DateTime result;
+                            if (DateTime.TryParse(cell.Value.ToString(), out result))
+                            {
+                                model.TableData += "<td>" + result.ToString("dd/MM/yyyy") + "</td>";
+                            }
+                            else
+                            {
+                                model.TableData += "<td>" + cell.Value.ToString() + "</td>";
+                            }
                             i++;
                         }
                         model.TableData += "</tr>";
                     }
 
-                  //  dataGridView1.DataSource = dt;
+                  
                 }
+                model.TableData += "</tbody></table>";
             }
         
 

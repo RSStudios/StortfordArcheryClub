@@ -105,6 +105,10 @@ main {
   padding: 10px;
 }
 
+.alignCentre {
+  margin: 0 auto;
+}
+
 body {
   font-family: Lato, sans-serif;
 }
@@ -133,13 +137,13 @@ blockquote {
 }
 
 .btn.btn-primary {
-  background-color: #f94c3b;
-  border-color: #f94c3b;
+  background-color: #006400;
+  border-color: #006400;
   transition: all 0.2s ease-in-out;
 }
 .btn.btn-primary:hover {
-  background-color: #e11a07;
-  border-color: #e11a07;
+  background-color: #7af6a8;
+  border-color: #7af6a8;
 }
 
 .card .card-img, .card .card-img-top {
@@ -271,4 +275,8 @@ footer {
 .footer-title {
   color: #006400;
   font-size: medium;
+}
+
+.tabularContainer {
+  margin: 0 auto;
 }

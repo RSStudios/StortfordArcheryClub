@@ -12,7 +12,7 @@ namespace StortfordArchers.Models
     public class PageWithTable : Page<PageWithTable>
     {
 
-        public HtmlField HtmlBody { get; set; }
+      //  public HtmlField HtmlBody { get; set; }
 
         // excel file
         public string uploadedFile { get; set; }
