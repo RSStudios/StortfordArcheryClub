@@ -34,15 +34,7 @@ namespace StortfordArchers.Controllers
 
             var site = await _api.Sites.GetDefaultAsync();
 
-            var catalog = await _api.Pages.GetBySlugAsync<CommitteeDetailsPage>("quiver");
-
-            foreach (CommitteeDetails m in _db.CommitteeDetails.Include(c => c.MemberName))
-            {
-                // if the category page alread exists, then skip to the next iteration of the loop
-                CommitteeDetailsPage cm = await _api.Pages.GetBySlugAsync<CommitteeDetailsPage>($"catalog/{m.MemberName}");
-
-
-            }
+          
 
             return null;
         }
