@@ -51,6 +51,7 @@ namespace StortfordArchers
                     db.UseSqlServer(Configuration.GetConnectionString("piranha")));
                 options.UseIdentityWithSeed<IdentitySQLServerDb>(db =>
                     db.UseSqlServer(Configuration.GetConnectionString("piranha")));
+               
 
                 //configure db
                /*  string databasePath = Path.Combine("..", "StortfordArchers.db");
@@ -110,6 +111,21 @@ namespace StortfordArchers
                 options.UseTinyMCE();
                 options.UseIdentity();
             });
+
+            //App.Permissions["Manager"].Add(new Piranha.Security.PermissionItem
+            //{
+            //    Category = "My Manager Feature",
+            //    Name = "EditStuff",
+            //    Title = "Edit Stuff",
+            //    IsInternal = true
+            //});
+            //App.Permissions["Manager"].Add(new Piranha.Security.PermissionItem
+            //{
+            //    Category = "My Manager Feature",
+            //    Name = "DeleteStuff",
+            //    Title = "Delete Stuff",
+            //    IsInternal = true
+            //});
         }
     }
 }

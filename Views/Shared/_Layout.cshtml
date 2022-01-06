@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+  
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,12 +27,32 @@
 
                     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                         <ul class="navbar-nav ml-auto">
-                            @foreach (var item in (await WebApp.Site.Sitemap.ForUserAsync(User, Auth)).Where(i => !i.IsHidden))
+                         
+                            @foreach (var item in WebApp.Site.Sitemap)
+            {
+                if (!item.IsHidden && item.Items.Count == 0)
+                {
+                    <li class="nav-item  @(item.Id == WebApp.PageId ? "active" : "")">
+                        <a class="nav-link" href="@item.Permalink">@item.MenuTitle</a>
+                    </li>
+                }
+
+                if (!item.IsHidden && item.Items.Count >= 1)
+                {
+                    <li class="nav-item dropdown  @(item.Id == WebApp.PageId || item.HasChild(WebApp.PageId) ? "active" : "")">
+                        <a class="nav-link" data-toggle="dropdown" href="@item.Permalink">@item.MenuTitle</a>
+                        <div class="dropdown-menu medium-left-padding" style= "width: 300px;" >
+                            @foreach (var subitem in item.Items)
                             {
-                                <li class="nav-item@(item.Id == WebApp.PageId || item.HasChild(WebApp.PageId) ? " active" : "")">
-                                    <a class="nav-link" href="@WebApp.Url(item)">@item.MenuTitle</a>
-                                </li>
+                                <div>
+                                <a href="@subitem.Permalink">@subitem.MenuTitle</a>
+                                </div>
                             }
+                        </div>
+                    </li>
+
+                }
+            }
                         </ul>
                     </div>
                 </div>

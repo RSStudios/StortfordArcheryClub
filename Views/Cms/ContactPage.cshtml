@@ -77,54 +77,54 @@
     <form method="post">
         <div class="form large-top-margin">
         <div class="row small-bottom-padding large-top-margin">
-            <div class="col-sm-5">
+            <div class="col-md-5">
                 <div class="row">
-                    <div class="col-sm-2">
+                    <div class="col-md-2">
                         <label asp-for="Name"></label>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-md-8">
                         <input asp-for="Name" style="width:250px;" placeholder="Enter name" />
                     </div>
                 </div>
                 <div class="row small-bottom-padding">
-                    <div class="col-sm-2">
+                    <div class="col-md-2">
                         <label asp-for="Phone"></label>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-md-8">
                         <input asp-for="Phone" style="width:250px;" placeholder="Enter phone number" />
                     </div>
                 </div>
                 <div class="row small-bottom-padding">
-                    <div class="col-sm-2">
+                    <div class="col-md-2">
                         <label asp-for="Subject"></label>
                     </div>
-                    <div class="col-sm-8 small-bottom-padding">
+                    <div class="col-md-8 small-bottom-padding">
                         <input asp-for="Subject" style="width:250px;" placeholder="Enter a subject" />
                     </div>
                 </div>
                 <div class="row small-bottom-padding">
-                    <div class="col-sm-2">
+                    <div class="col-md-2">
                         <label asp-for="Email"></label>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-md-8">
                         <input asp-for="Email" style="width:250px;" placeholder="Enter an email address" />
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-5">
+            <div class="col-md-5">
                 <div class="row small-bottom-padding">
-                    <div class="col-sm-2">
+                    <div class="col-md-2">
                         <label asp-for="Message"></label>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-md-8">
                         <textarea asp-for="Message" style="width:300px;height:150px;" placeholder="Enter a message"></textarea>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-2 offset-sm-8">
+            <div class="col-md-2 offset-md-8">
                 <button class="button" asp-controller="Cms" asp-action="Contact">Submit</button>
             </div>
         </div>
@@ -132,13 +132,13 @@
     </form>
 
     <div class="row small-bottom-padding">
-        <div class="col-sm-10" style="color: #006400; margin-top:10px;">
+        <div class="col-md-10" style="color: #006400; margin-top:10px;">
             In contacting the club you agree to the terms of the clubs GDPR policy.
             A link to which can be found at the bottom of this page.
         </div>
     </div>
     <div class="row small-bottom-padding">
-        <div class="col-sm-10">
+        <div class="col-md-10">
             @Model.Response
         </div>
 

@@ -11,6 +11,7 @@ using ClosedXML.Excel;
 using StortfordArchers.Blocks;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace StortfordArchers.Controllers
 {
@@ -20,16 +21,18 @@ namespace StortfordArchers.Controllers
         private readonly IApi _api;
         private readonly IModelLoader _loader;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="api">The current api</param>
-        public CmsController(IApi api, IModelLoader loader, IWebHostEnvironment webHostEnvironment)
+        public CmsController(IApi api, IModelLoader loader, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _api = api;
             _loader = loader;
             _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -199,66 +202,80 @@ namespace StortfordArchers.Controllers
                     string ext= GetFileExtension(url);
                     if (ext == ".xlsx" || ext == ".xls")
                     {
+                        string webRootPath;
+                        if (_webHostEnvironment.EnvironmentName =="Development")
+                        {
+                            webRootPath = _webHostEnvironment.WebRootPath;
+                        }
+                        else
+                        {
+                            webRootPath = _configuration.GetConnectionString("uploadLocation");
+                        }
 
-                         
-
-                        string webRootPath = _webHostEnvironment.WebRootPath;
+                                             
                         // string contentRootPath = _webHostEnvironment.ContentRootPath;
 
                         string path = "";
                         path = webRootPath + url;
-                        using (XLWorkbook workBook = new XLWorkbook(path))
+                       
+                        try
                         {
-                            //Read the first Sheet from Excel file.
-                            IXLWorksheet workSheet = workBook.Worksheet(1);
-
-                            //Create a new DataTable.
-                            //  DataTable dt = new DataTable();
-                            model.TableData += "<table style=\"width:100%\" class=\"tabularContainer\">";
-
-                            //Loop through the Worksheet rows.
-                            bool firstRow = true;
-                            int cellcount;
-                            foreach (IXLRow row in workSheet.Rows())
+                            using (XLWorkbook workBook = new XLWorkbook(path))
                             {
-                                //Use the first row to add column headings to  the Table.
-                                if (firstRow)
+                                //Read the first Sheet from Excel file.
+                                IXLWorksheet workSheet = workBook.Worksheet(1);
+
+                                //Create a new DataTable.
+                                //  DataTable dt = new DataTable();
+                                model.TableData += "<table style=\"width:100%\" class=\"tabularContainer\">";
+
+                                //Loop through the Worksheet rows.
+                                bool firstRow = true;
+                                int cellcount;
+                                foreach (IXLRow row in workSheet.Rows())
                                 {
-                                    cellcount = row.Cells().Count();
-                                    model.TableData += "<thead><tr>";
-                                    foreach (IXLCell cell in row.Cells())
+                                    //Use the first row to add column headings to  the Table.
+                                    if (firstRow)
                                     {
-                                        model.TableData += "<th>" + cell.Value + "</th>";
+                                        cellcount = row.Cells().Count();
+                                        model.TableData += "<thead><tr>";
+                                        foreach (IXLCell cell in row.Cells())
+                                        {
+                                            model.TableData += "<th>" + cell.Value + "</th>";
 
+                                        }
+                                        model.TableData += "</tr></thead><tbody>";
+                                        firstRow = false;
                                     }
-                                    model.TableData += "</tr></thead><tbody>";
-                                    firstRow = false;
-                                }
-                                else
-                                {
-
-                                    model.TableData += "<tr>";
-                                    int i = 0;
-                                    foreach (IXLCell cell in row.Cells())
+                                    else
                                     {
-                                        DateTime result;
-                                        if (DateTime.TryParse(cell.Value.ToString(), out result))
+
+                                        model.TableData += "<tr>";
+                                        int i = 0;
+                                        foreach (IXLCell cell in row.Cells())
                                         {
-                                            model.TableData += "<td>" + result.ToString("dd/MM/yyyy") + "</td>";
+                                            DateTime result;
+                                            if (DateTime.TryParse(cell.Value.ToString(), out result))
+                                            {
+                                                model.TableData += "<td>" + result.ToString("dd/MM/yyyy") + "</td>";
+                                            }
+                                            else
+                                            {
+                                                model.TableData += "<td>" + cell.Value.ToString() + "</td>";
+                                            }
+                                            i++;
                                         }
-                                        else
-                                        {
-                                            model.TableData += "<td>" + cell.Value.ToString() + "</td>";
-                                        }
-                                        i++;
+                                        model.TableData += "</tr>";
                                     }
-                                    model.TableData += "</tr>";
+
+
                                 }
-
-
+                                model.TableData += "</tbody></table>";
                             }
-                            model.TableData += "</tbody></table>";
                         }
+                        catch(Exception ex) {
+                            model.Message += ex.Message;
+                                }
                     }
                 }
             }
