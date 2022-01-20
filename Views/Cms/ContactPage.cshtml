@@ -1,9 +1,12 @@
 @using StortfordArchers.Models
 @model ContactPage
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/Contact.js"></script>
 
-@{
-    ViewBag.Title = "CONTACT";
-}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+
 <div class="container">
 
     <div class="row">
@@ -74,16 +77,19 @@
 
     </div>
     <div class="clearfix"></div>
-    <form method="post">
+    <article class="get-in-touch">
+    <div class= "row">
+        <div class= "col-md-12">
+    <form>
         <div class="form large-top-margin">
         <div class="row small-bottom-padding large-top-margin">
             <div class="col-md-5">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 small-bottom-padding">
                         <label asp-for="Name"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="Name" style="width:250px;" placeholder="Enter name" />
+                        <input asp-for="Name" style="width:250px;" class="form-item" placeholder="Enter name" />
                     </div>
                 </div>
                 <div class="row small-bottom-padding">
@@ -91,7 +97,7 @@
                         <label asp-for="Phone"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="Phone" style="width:250px;" placeholder="Enter phone number" />
+                        <input asp-for="Phone" class= "form-item" style="width:250px;" placeholder="Enter phone number" />
                     </div>
                 </div>
                 <div class="row small-bottom-padding">
@@ -99,7 +105,7 @@
                         <label asp-for="Subject"></label>
                     </div>
                     <div class="col-md-8 small-bottom-padding">
-                        <input asp-for="Subject" style="width:250px;" placeholder="Enter a subject" />
+                        <input asp-for="Subject"  class= "form-item" style="width:250px;" placeholder="Enter a subject" />
                     </div>
                 </div>
                 <div class="row small-bottom-padding">
@@ -107,29 +113,33 @@
                         <label asp-for="Email"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="Email" style="width:250px;" placeholder="Enter an email address" />
+                        <input asp-for="Email"  class= "form-item" style="width:250px;" placeholder="Enter an email address" />
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-7">
                 <div class="row small-bottom-padding">
-                    <div class="col-md-2">
+                    <div class="col-md-2  col-sm-12">
                         <label asp-for="Message"></label>
                     </div>
-                    <div class="col-md-8">
-                        <textarea asp-for="Message" style="width:300px;height:150px;" placeholder="Enter a message"></textarea>
+                    <div class="col-md-10 col-sm-12">
+                        <textarea asp-for="Message"  class= "form-item" style="min-width:350px;height:150px;" placeholder="Enter a message"></textarea>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2 offset-md-8">
-                <button class="button" asp-controller="Cms" asp-action="Contact">Submit</button>
+            <div class="col-md-2 offset-md-9">
+              @*  <button class="button" asp-controller="Cms" asp-action="Contact">Submit</button>*@
+                 <input id="send-the-message" type="submit" value="Send Message"  class="send-message button">
             </div>
         </div>
     </div>
     </form>
+    </div>
+    </div>
+    </article>
 
     <div class="row small-bottom-padding">
         <div class="col-md-10" style="color: #006400; margin-top:10px;">
@@ -144,3 +154,8 @@
 
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        window.StortfordArchers.Contact.init();
+});
+</script>

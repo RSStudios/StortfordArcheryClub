@@ -9,7 +9,7 @@ using Piranha.AspNetCore.Identity.SQLServer;
 using Piranha.AttributeBuilder;
 using Piranha.Data.EF.SQLServer;
 using Piranha.Manager.Editor;
-
+using StortfordArchers.Models;
 
 namespace StortfordArchers
 {
@@ -75,6 +75,7 @@ namespace StortfordArchers
                 options.LoginUrl = "login";
                  */
             });
+            services.Configure<MailSettingsOptions>(Configuration.GetSection("MailSettings"));
           //  services.AddPiranhaFileStorage();
         }
 

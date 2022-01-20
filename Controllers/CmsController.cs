@@ -12,6 +12,8 @@ using StortfordArchers.Blocks;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace StortfordArchers.Controllers
 {
@@ -22,17 +24,19 @@ namespace StortfordArchers.Controllers
         private readonly IModelLoader _loader;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
+        private readonly IOptions<MailSettingsOptions> _emailOptions;
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="api">The current api</param>
-        public CmsController(IApi api, IModelLoader loader, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public CmsController(IApi api, IModelLoader loader, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IOptions<MailSettingsOptions> emailOptions)
         {
             _api = api;
             _loader = loader;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
+            _emailOptions = emailOptions;   
         }
 
         /// <summary>
@@ -150,36 +154,49 @@ namespace StortfordArchers.Controllers
 
         [HttpPost]
         [Route("/Contact")]
-        public IActionResult Contact(ContactPage model)
+        [Produces("application/json")]
+        public IActionResult Contact([FromBody]ContactPage model)
         {
             var data = model;
 
             //todo
-            data.Response = "Your request has been sent";
-            //try
-            //{
-            //    var model = await _loader.GetPageAsync<ContactPage>(id, HttpContext.User);
 
-            //    // Create the comment
-            //    var comment = new PostComment
-            //    {
-            //        IpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
-            //        UserAgent = Request.Headers.ContainsKey("User-Agent") ? Request.Headers["User-Agent"].ToString() : "",
-            //        Author = commentModel.CommentAuthor,
-            //        Email = commentModel.CommentEmail,
-            //        Url = commentModel.CommentUrl,
-            //        Body = commentModel.CommentBody
-            //    };
-            //    await _api.Posts.SaveCommentAndVerifyAsync(commentModel.Id, comment);
+            StringBuilder errorMessage = new StringBuilder();
 
-            //    return Redirect(model.Permalink + "#comments");
-            //}
-            //catch (UnauthorizedAccessException)
-            //{
-            //    return Unauthorized();
-            //}
+            if (string.IsNullOrEmpty(model.Name))
+            {
+                errorMessage.Append("Please enter your name <br/>");
+            }
 
-            return View("~/Views/Cms/ContactPage.cshtml", data);
+            if (string.IsNullOrEmpty(model.Email))
+            {
+                errorMessage.Append("Please enter an email address<br />");
+            }
+
+            if (string.IsNullOrEmpty(model.Message))
+            {
+                errorMessage.Append("Please enter a message");
+            }
+
+            var success = false;
+            if (errorMessage.Length == 0)
+            {
+                success = true;
+                string msg = $"{model.Name} has sent the following message.<br /><br /> Their email address is: {model.Email}.<br /><br />Their phone number is: {model.Phone}.<br /><br />  The message reads:<br /> " + model.Message;
+                Helper helper = new Helper(_emailOptions.Value);
+               
+
+                var result =helper.SendEmail("Get in Touch", msg, string.Empty);
+
+                if (!string.IsNullOrEmpty(result))
+                    success = false;
+
+                return Json(new { success, errorMsg = result });
+            }
+
+            var errorMsg = errorMessage.ToString();
+            return Json(new { success, errorMsg });
+
         }
 
         [Route("/TabularPage")]
