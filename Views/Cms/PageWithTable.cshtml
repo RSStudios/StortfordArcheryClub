@@ -1,7 +1,10 @@
-﻿@model PageWithTable
+﻿@using StortfordArchers.Enumerations
+@using StortfordArchers.Models.ViewModels
+@model PageWithTable
 @{
     ViewData["Title"] = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title;
     var hasImage = Model.PrimaryImage.HasValue;
+    List<PageWithTableViewModel> pages = ViewBag.PageWithTableViewModel;
 }
 @section head {
     @WebApp.MetaTags(Model)
@@ -42,33 +45,37 @@ else
 <main>
 
 
-    @foreach (var block in Model.Blocks)
+    @foreach (PageWithTableViewModel block in pages)
     {
-        if (block.Type != "StortfordArchers.Blocks.ExcelBlock")
+        if (block.PageWithTableTypes == PageWithTableTypes.HtmlBlock)
         {
-            <div class="block @block.CssName()">
+            <div class="block @block.Block.CssName()">
                 <div class="container">
-                    @Html.DisplayFor(m => block, block.GetType().Name)
+                    @Html.DisplayFor(m => block.Block, block.Block.GetType().Name)
                 </div>
             </div>
+        }
+        else if (block.PageWithTableTypes == PageWithTableTypes.ExcelBlock)
+        {
+            <div class="row large-top-margin large-bottom-margin">
+                 <div class="col-10 alignCentre">
+                     @Html.Raw(block.Html)
+             </div>
+            </div>
+        }
+        else
+        {
+            <div class="row large-top-margin alignCentre">
+        <div class="col-10 alignCentre">
+            @block.Html
+        </div>
+    </div>
         }
     }
 </main>
 
-<div class="row large-top-margin">
-    <div class="col-10 alignCentre">
-        @Html.Raw(Model.TableData)
-    </div>
-</div>
 
-@if (!string.IsNullOrEmpty(Model.Message))
-{
-    <div class="row large-top-margin alignCentre">
-        <div class="col-10 alignCentre">
-            @Model.Message
-        </div>
-    </div>
-}
+
 
 
 

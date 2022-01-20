@@ -14,6 +14,8 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using StortfordArchers.Models.ViewModels;
 
 namespace StortfordArchers.Controllers
 {
@@ -206,12 +208,21 @@ namespace StortfordArchers.Controllers
 
             model.TableData = "";
             model.Message = "";
+            List<PageWithTableViewModel> pages = new ();
+
 
             foreach (var item in model.Blocks)
             {
-                if (item.Type == "StortfordArchers.Blocks.ExcelBlock")
+                PageWithTableViewModel page = new PageWithTableViewModel();
+                if (item.Type == "Piranha.Extend.Blocks.HtmlBlock")
                 {
-                    Guid guid = item.Id;        
+                    page.PageWithTableTypes = Enumerations.PageWithTableTypes.HtmlBlock;
+                    page.Block = item;
+                }
+                    if (item.Type == "StortfordArchers.Blocks.ExcelBlock")
+                {
+                    Guid guid = item.Id;
+                    page.PageWithTableTypes = Enumerations.PageWithTableTypes.ExcelBlock;
 
                     var uploadItem = (ExcelBlock)item;
 
@@ -248,7 +259,7 @@ namespace StortfordArchers.Controllers
 
                                     //Create a new DataTable.
                                     //  DataTable dt = new DataTable();
-                                    model.TableData += "<table style=\"width:100%\" class=\"tabularContainer\">";
+                                    model.TableData = "<table style=\"width:100%\" class=\"tabularContainer\">";
 
                                     //Loop through the Worksheet rows.
                                     bool firstRow = true;
@@ -292,24 +303,28 @@ namespace StortfordArchers.Controllers
 
                                     }
                                     model.TableData += "</tbody></table>";
+                                    page.Html = model.TableData;
                                 }
                             }
                             catch (Exception ex)
                             {
-                                model.Message += ex.Message;
+                                page.Html += ex.Message;
+                                page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
                             }
                         }
                        
                     }
                     else
                     {
-                        model.Message += "Currently nothing to display for this item";
+                        page.Html += "Currently nothing to display for this item";
+                        page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
                     }
                 }
+                pages.Add(page);
             }
 
 
-
+            ViewBag.PageWithTableViewModel = pages;
 
             return View("~/Views/Cms/PageWithTable.cshtml", model);
         }
