@@ -6,5 +6,9 @@
   {
     "outputFile": "assets/scss/inc/_type.css",
     "inputFile": "assets/scss/inc/_type.scss"
+  },
+  {
+    "outputFile": "assets/scss/inc/_tabular.css",
+    "inputFile": "assets/scss/inc/_tabular.scss"
   }
 ]
