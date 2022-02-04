@@ -60,8 +60,24 @@ main {
   padding-left: 10px;
 }
 
+.small-right-padding {
+  padding-right: 5px;
+}
+
+.medium-right-padding {
+  padding-right: 10px;
+}
+
 .small-top-margin {
   margin-top: 5px;
+}
+
+.medium-right-margin {
+  margin-right: 10px;
+}
+
+.medium-left-margin {
+  margin-left: 10px;
 }
 
 .medium-top-margin {
@@ -289,7 +305,3 @@ footer {
 .responsive-container {
   overflow-x: auto;
 }
-
-/*.responsive {
-    width:2000px;
-}*/
