@@ -50,8 +50,10 @@ else
         if (block.PageWithTableTypes == PageWithTableTypes.HtmlBlock)
         {
             <div class="block @block.Block.CssName()">
-                <div class="container">
+                <div class="row large-top-margin large-bottom-margin medium-right-margin medium-left-margin responsive-container">
+                     <div class="col-10">
                     @Html.DisplayFor(m => block.Block, block.Block.GetType().Name)
+                   </div>
                 </div>
             </div>
         }
