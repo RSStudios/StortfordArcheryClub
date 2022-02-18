@@ -21,6 +21,7 @@ namespace StortfordArchers.Models
     [BlockItemType(typeof(Piranha.Extend.Blocks.ColumnBlock))]
     [BlockItemType(typeof(Piranha.Extend.Blocks.MarkdownBlock))]
     [BlockItemType(typeof(Piranha.Extend.Blocks.AudioBlock))]
+    [BlockItemType(typeof(Blocks.CalendarBlock))]
     public class StandardPage  : Page<StandardPage>
     {
     }

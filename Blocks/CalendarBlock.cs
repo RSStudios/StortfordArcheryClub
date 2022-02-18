@@ -4,13 +4,11 @@ using Piranha.Extend.Fields;
 
 namespace StortfordArchers.Blocks
 {
-   
-    [BlockType(Name = "Excel file upload", Category = "Media", Icon = "fas fa-address-card", Component = "excel-block")]
-    public class ExcelBlock : Block
+    [BlockType(Name = "Calendar file upload", Category = "Media", Icon = "fas fa-address-card", Component = "calendar-block")]
+    public class CalendarBlock : Block
     {
-     
-        [Field(Placeholder ="Select an Excel format file to  upload")]
-       
+        [Field(Placeholder = "Select an Excel format file to  upload")]
+
         public DocumentField Upload { get; set; }
 
 

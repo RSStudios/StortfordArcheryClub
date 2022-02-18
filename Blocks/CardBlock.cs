@@ -4,9 +4,6 @@ using Piranha.Extend.Fields;
 
 namespace StortfordArchers.Blocks
 {
-    //[BlockType(Name = "Card", Category = "Content", Icon = "fas fa-address-card", Component = "card-block")]
-    //public class CardBlock : Block
-
    [BlockType(Name ="Card", Category = "Content", Icon = "fas fa-address-card", Component = "card-block")]
     public class CardBlock : Block
     {

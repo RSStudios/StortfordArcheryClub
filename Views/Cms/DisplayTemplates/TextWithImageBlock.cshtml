@@ -1,7 +1,7 @@
 ﻿@model StortfordArchers.Blocks.TextWithImageBlock
 
 <div class="row">
-    <div class="col-2">
+    <div style="width: 110px; float:left;">
         @if (Model.ImgBody.HasValue)
         {
             <div style="width: 100px;">
@@ -10,7 +10,7 @@
         }
     </div>
 
-    <div class="col-10">
+    <div style="float:left; max-width:90%;">
         @Html.Raw(Model.HtmlBody)
     </div>
 </div>

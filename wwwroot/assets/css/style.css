@@ -304,4 +304,5 @@ footer {
 
 .responsive-container {
   overflow-x: auto;
+  width: 80%;
 }
