@@ -12,54 +12,7 @@
                 subject: document.getElementById('Subject').value,
                 phone: document.getElementById('Phone').value
             };
-            //var data = {
-            //    Name: 'ddd',
-            //    Message: 'eee',
-            //    Email: 'fff',
-            //    Phone: 'ppp',
-            //    Subject: 'lll',
-            //    Response: 'llo'
-            //};
-
-            //jQuery.ajax({
-            //    type: "POST",
-            //    url: "Cms/Contact",
-            //    data: JSON.stringify(data),
-            //    contentType: "application/json",
-            //    dataType: "json"
-            //}).done(function (data) {
-            //    toastr.options = {
-            //        "closeButton": true,
-            //        "debug": false,
-            //        "newestOnTop": false,
-            //        "progressBar": false,
-            //        "positionClass": "toast-bottom-right",
-            //        "preventDuplicates": false,
-            //        "onclick": null,
-            //        "showDuration": "300",
-            //        "hideDuration": "1000",
-            //        "timeOut": "5000",
-            //        "extendedTimeOut": "1000",
-            //        "showEasing": "swing",
-            //        "hideEasing": "linear",
-            //        "showMethod": "fadeIn",
-            //        "hideMethod": "fadeOut",
-            //        "tapToDismiss": true
-            //    };
-
-            //    if (data.success) {
-            //        toastr.success('Thank you for contacting us.  Your message has been sent.');
-            //    }
-            //    else {
-            //        toastr.error(data.errorMsg);
-            //    }
-
-            //    sendMsgButton.disabled = false;
-            //}).fail(function (response) {
-            //    console.log('Error');
-            //    sendMsgButton.disabled = false;
-            //});
-
+           
             const response = await fetch("Contact", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

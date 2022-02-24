@@ -42,10 +42,17 @@ else
 <main>
     @foreach (var block in Model.Blocks)
     {
-        <div class="block @block.CssName()">
-            <div class="container">
+        if (block.Type == "StortfordArchers.Blocks.CalendarBlock")
+        {
+            ;// await Component.InvokeAsync("Calendar", block);
+        }
+        else
+        {
+            <div class="block @block.CssName()">
+                <div class="container">
                 @Html.DisplayFor(m => block, block.GetType().Name)
             </div>
         </div>
+        }
     }
 </main>

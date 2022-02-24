@@ -44,32 +44,60 @@ main {
   padding-bottom: 5px;
 }
 
-.medium-bottom-padding {
-  padding-bottom: 10px;
-}
-
-.large-bottom-padding {
-  padding-bottom: 15px;
+.small-top-padding {
+  padding-top: 5px;
 }
 
 .small-left-padding {
   padding-left: 5px;
 }
 
-.medium-left-padding {
-  padding-left: 10px;
-}
-
 .small-right-padding {
   padding-right: 5px;
+}
+
+.medium-padding {
+  padding: 10px 10px 10px 10px;
+}
+
+.medium-bottom-padding {
+  padding-bottom: 10px;
+}
+
+.medium-left-padding {
+  padding-left: 10px;
 }
 
 .medium-right-padding {
   padding-right: 10px;
 }
 
+.large-bottom-padding {
+  padding-bottom: 15px;
+}
+
+.large-right-padding {
+  padding-right: 15px;
+}
+
+.large-left-padding {
+  padding-left: 15px;
+}
+
 .small-top-margin {
   margin-top: 5px;
+}
+
+.small-left-margin {
+  margin-left: 5px;
+}
+
+.small-right-margin {
+  margin-right: 5px;
+}
+
+.small-bottom-margin {
+  margin-bottom: 5px;
 }
 
 .medium-right-margin {
@@ -84,8 +112,16 @@ main {
   margin-top: 10px;
 }
 
+.medium-bottom-margin {
+  margin-bottom: 10px;
+}
+
 .large-top-margin {
   margin-top: 15px;
+}
+
+.large-right-margin {
+  margin-right: 15px;
 }
 
 .large-bottom-margin {
@@ -128,6 +164,53 @@ main {
 .form-item {
   border: 1px solid #fefefe;
   border-radius: 15px;
+}
+
+.text-xlarge {
+  font-size: 140%;
+}
+
+.width-full {
+  width: 100%;
+}
+
+/* Float start */
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-clear {
+  clear: both;
+}
+
+/* Float end */
+.large-calendar-header ul, .large-calendar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.large-calendar-header li, .large-calendar li {
+  width: 134px;
+  padding: 6px 0;
+  border: 0;
+}
+
+.large-calendar li.has-valid-day-of-month {
+  cursor: pointer;
+}
+
+.large-calendar-header li, .large-calendar-header li a.colour, .large-calendar li, .large-calendar li a.colour {
+  color: #fff;
+}
+
+.large-calendar-header li.last-child, .large-calendar li.last-child {
+  margin-right: 0;
 }
 
 body {
