@@ -1,11 +1,17 @@
-﻿using StortfordArchers.Blocks;
+﻿using Piranha.Extend.Fields;
+using StortfordArchers.Blocks;
+using StortfordArchers.Models.Calendar;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StortfordArchers.Interfaces
 {
     public abstract class ExcelReader
     {
         public abstract string GetExcelResults(ExcelBlock excelBlock, string webRootPath);
+
+        public abstract Task<List<CalendarDetails>> GetExcelCalendarResults(CalendarBlock excelblock, string webRootPath);
 
         private string GetFileExtension(string fileName)
         {
@@ -17,14 +23,13 @@ namespace StortfordArchers.Interfaces
             return ext;
         }
 
-        protected string GetExcelPath(ExcelBlock block, string webRootPath)
+        public string GetExcelPath(DocumentField block, string webRootPath)
         {
-            var uploadItem = block;
             var path = "";
 
-            if (uploadItem.Upload.Media != null)
+            if (block.Media != null)
             {
-                var url = uploadItem.Upload.Media.PublicUrl.Substring(1).Replace(@"/", @"\");
+                var url = block.Media.PublicUrl.Substring(1).Replace(@"/", @"\");
 
                 //check file is excel type
                 string ext = GetFileExtension(url);

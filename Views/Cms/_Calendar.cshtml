@@ -1,0 +1,148 @@
+﻿@using StortfordArchers.Models.Calendar
+
+@model List<CalendarDetails>
+
+<style>
+        .mapouter {
+            position: relative;
+            text-align: right;
+            height: 200px;
+            width: 300px;
+        }
+        .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 200px;
+            width: 300px;
+        }
+        </style>
+
+<article class="large-calendar days-of-months">
+    @{
+        var ulCounter = 1;
+    }
+
+    @for (var count = 0; count < Model.Count; count++)
+    {
+        var backgroundTheme = Model[count].DateVal == DateTime.MinValue ? string.Empty : "Theme0Bg";
+        var htmlValue = (Model[count].DateVal == DateTime.MinValue ? "&nbsp;" : Model[count].DateVal.Day.ToString());
+        var nameCodeFound = false;
+        var classNameForValidDayOfMonth = (Model[count].DateVal != DateTime.MinValue) ? "has-valid-day-of-month" : "ThemeA5Bg";
+        if (Model[count].DateVal != DateTime.MinValue && Model[count].CalItem.Count > 0)
+        {
+            nameCodeFound = true;
+        }
+
+        if (ulCounter == 1)
+        {
+            @:<ul>
+        }
+ 
+        var lastChild = string.Empty;
+        if (ulCounter % 7 == 0)
+        {
+            // N.B.: We can't use pseduo elements with IE8, so we can't make use of the :last-child.
+            // Therefore, we're haivng to inject the CSS class if we're on the last element.
+            lastChild = "last-child";
+        }
+        <li class="@backgroundTheme medium-right-margin medium-bottom-margin float-left day-height-large @classNameForValidDayOfMonth @lastChild">
+            <section class="medium-left-padding medium-right-padding">
+                <div class="float-left ThemeA1 bold small-bottom-margin">@Html.Raw(htmlValue)</div>
+                <div class="float-clear"></div>
+                @if (nameCodeFound)
+                {
+                     <div class="small-bottom-margin align-left calendar-item">
+                                <div class="padding-small text-small single-line-ellipsis">
+                          <span  class="calendar-popup" data-date="@Model[count].DateVal.ToString("dd-MMM-yyyy")" data-id="@count">  @Model[count].CalItem.Count   event(s) happening </span>
+                              </div>
+                            </div>
+                 
+                }
+            </section>
+        </li>
+
+        if (ulCounter % 7 == 0)
+        {
+            @:</ul>
+            ulCounter = 1;
+        }
+        else
+        {
+            ulCounter++;
+        }
+    }
+</article>
+<article class="float-clear"></article>
+ <script type="module">
+
+        import {calendarPopUp} from '/js/Calendar.js';
+    calendarPopUp();
+    </script>
+
+<!-- 1. The dialog container -->
+<div
+  id="calendar-modal"
+  aria-labelledby="welcome"
+  aria-hidden="true"
+  class="dialog-container dialog-overlay">
+  <!-- 2. The dialog overlay -->
+  <div data-a11y-dialog-hide></div>
+  <!-- 3. The actual dialog -->
+  <div role="document" class="dialog-content large-padding">
+    <!-- 4. The close button -->
+    <button type="button" class="dialog-close green float-right" data-a11y-dialog-hide aria-label="Close dialog">
+      &times;
+    </button>
+    <div class="float-clear"></div>
+    <!-- 5. The dialog title -->
+    <h1 class="text-xlarge grey-underline" id="events">Events</h1>
+    <!-- 6. Dialog content -->
+    <div class='content'></div>
+  </div>
+</div>
+
+ @for (var count = 0; count < Model.Count; count++)
+    {
+    bool nameCodeFound = false;
+    if (Model[count].DateVal != DateTime.MinValue && Model[count].CalItem.Count > 0)
+        {
+            nameCodeFound = true;
+        }
+    if (!nameCodeFound){
+        continue;
+    }
+    <template id="template-day-id-@count">
+
+    <div>
+         @foreach (var c in Model[count].CalItem)
+                 {
+                     
+                <div class="row large-bottom-margin dialog-border">
+                    <div class="col-6">
+                        <div class="row">
+                        <div class= "col-12 text-large bold">Name: @c.Title </div>
+                        </div>
+                        <div class="row">
+                        <div class= "col-12">When: @c.Time </div>
+                        </div>
+                        <div class="row">
+                        <div class= "col-12">Where: @c.Location </div>
+                        </div>
+                        <div class="row">
+                        <div class= "col-12">Notes: @c.Description </div>
+                        </div>
+                        @if(!string.IsNullOrEmpty(c.MapPostcode))
+                        {
+                            <div class="row large-left-padding">
+                              
+                                    <iframe width="300" height="200" id="gmap_canvas" src="https://maps.google.com/maps?q=@c.MapPostcode&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="5"></iframe>
+                               
+                            </div>
+                        }
+                    </div>
+             </div>
+                    }
+    </div>
+</template>
+
+    }

@@ -20,6 +20,10 @@ a:hover {
   color: #f71f0a;
 }
 
+.bold {
+  font-weight: 900;
+}
+
 #page-container {
   /* https: //www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c/ */
   position: relative;
@@ -58,6 +62,10 @@ main {
 
 .medium-padding {
   padding: 10px 10px 10px 10px;
+}
+
+.large-padding {
+  padding: 15px 15px 15px 15px;
 }
 
 .medium-bottom-padding {
@@ -170,6 +178,14 @@ main {
   font-size: 140%;
 }
 
+.text-large {
+  font-size: 120%;
+}
+
+.text-small {
+  font-size: 80%;
+}
+
 .width-full {
   width: 100%;
 }
@@ -183,11 +199,24 @@ main {
   float: left;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .float-clear {
   clear: both;
 }
 
 /* Float end */
+.day-height-large {
+  height: 95px;
+  background-color: #d3d3d3;
+}
+
+.align-center {
+  text-align: center;
+}
+
 .large-calendar-header ul, .large-calendar ul {
   list-style-type: none;
   margin: 0;
@@ -206,11 +235,34 @@ main {
 }
 
 .large-calendar-header li, .large-calendar-header li a.colour, .large-calendar li, .large-calendar li a.colour {
-  color: #fff;
+  color: #000;
+}
+
+.calendar-item {
+  color: #006400;
 }
 
 .large-calendar-header li.last-child, .large-calendar li.last-child {
   margin-right: 0;
+}
+
+.single-line-ellipsis {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-header-2 {
+  font-size: 170%;
+}
+
+.green {
+  color: #006400;
+}
+
+.grey-underline {
+  border-bottom: 1px solid #d3d3d3;
 }
 
 body {
@@ -388,4 +440,83 @@ footer {
 .responsive-container {
   overflow-x: auto;
   width: 80%;
+}
+
+/**
+* 1. Make the dialog container, and its child overlay spread across
+*    the entire window.
+*/
+.dialog-container,
+.dialog-overlay {
+  position: fixed;
+  /* 1 */
+  top: 0;
+  /* 1 */
+  right: 0;
+  /* 1 */
+  bottom: 0;
+  /* 1 */
+  left: 0;
+  /* 1 */
+}
+
+/**
+ * 1. Make sure the dialog container and all its descendants sits on
+ *    top of the rest of the page.
+ * 2. Make the dialog container a flex container to easily center the
+ *    dialog.
+ */
+.dialog-container {
+  z-index: 2;
+  /* 1 */
+  display: flex;
+  /* 2 */
+}
+
+/**
+ * 1. Make sure the dialog container and all its descendants are not
+ *    visible and not focusable when it is hidden.
+ */
+.dialog-container[aria-hidden=true] {
+  display: none;
+  /* 1 */
+}
+
+/**
+ * 1. Make the overlay look like an overlay.
+ */
+.dialog-overlay {
+  background-color: rgba(43, 46, 56, 0.9);
+  /* 1 */
+}
+
+/**
+ * 1. Vertically and horizontally center the dialog in the page.
+ * 2. Make sure the dialog sits on top of the overlay.
+ * 3. Make sure the dialog has an opaque background.
+ */
+.dialog-content {
+  margin: auto;
+  /* 1 */
+  z-index: 2;
+  /* 2 */
+  position: relative;
+  /* 2 */
+  background-color: white;
+  /* 3 */
+  min-width: 40%;
+}
+
+.dialog-border {
+  border-bottom: 1px solid #d3d3d3;
+  padding-bottom: 15px;
+}
+
+.dialog-border:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dialog-close {
+  border: none;
 }

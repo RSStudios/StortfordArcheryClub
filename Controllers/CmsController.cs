@@ -1,21 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Piranha;
 using Piranha.AspNetCore.Services;
 using Piranha.Models;
-using StortfordArchers.Models;
-using System.Linq;
-using System.Data;
-using ClosedXML.Excel;
 using StortfordArchers.Blocks;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using Microsoft.Extensions.Configuration;
-using System.Text;
-using Microsoft.Extensions.Options;
-using System.Collections.Generic;
+using StortfordArchers.Models;
+using StortfordArchers.Models.Calendar;
 using StortfordArchers.Models.ViewModels;
+using StortfordArchers.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace StortfordArchers.Controllers
 {
@@ -28,18 +27,22 @@ namespace StortfordArchers.Controllers
         private readonly IConfiguration _configuration;
         private readonly IOptions<MailSettingsOptions> _emailOptions;
         const int TotalCalendarItemsPerDay = 2;
-
+        private readonly IViewRenderService _viewRenderService;
+       
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="api">The current api</param>
-        public CmsController(IApi api, IModelLoader loader, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IOptions<MailSettingsOptions> emailOptions)
+        public CmsController(IApi api, IModelLoader loader, IWebHostEnvironment webHostEnvironment, 
+            IConfiguration configuration, IOptions<MailSettingsOptions> emailOptions,
+            IViewRenderService viewRenderService)
         {
             _api = api;
             _loader = loader;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
             _emailOptions = emailOptions;
+            _viewRenderService = viewRenderService;
         }
 
         /// <summary>
@@ -236,16 +239,16 @@ namespace StortfordArchers.Controllers
                             webRootPath = _configuration.GetConnectionString("uploadLocation");
                         }
 
-                        try
-                        {
-                            ExcelResultReader reader = new();
-                            page.Html = reader.GetExcelResults(uploadItem, webRootPath);
-                        }
-                        catch (Exception ex)
-                        {
-                            page.Html += ex.Message;
-                            page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
-                        }
+                        //try
+                        //{
+                        //    ExcelResultReader reader = new();
+                        //    page.Html = reader.GetExcelResults(uploadItem, webRootPath);
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    page.Html += ex.Message;
+                        //    page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
+                        //}
                     }
                     else
                     {
@@ -395,107 +398,142 @@ namespace StortfordArchers.Controllers
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        //public JsonResult LargeCalendar(string date)
-        //{
-        //    DateTime theDate;
-        //    if (!DateTime.TryParse(date, out theDate))
-        //    {
-        //        date = DateTime.Now.ToString("yyyy-MM-dd");
-        //        theDate = DateTime.Now;
-        //    }
+        public async Task<IActionResult> LargeCalendar(string date, Guid pageId, Guid calendarBlockId)
+        {
 
-        //    var model = new CalendarViewComponent() //LargeCalendarVM()
-        //    {
-        //        MonthName = theDate.ToString("MMM yyyy")
-        //    };
-        //    var first = new DateTime(theDate.Year, theDate.Month, 1);
-        //    var last = first.AddMonths(1).AddDays(-1);
+            var page = await _api.Pages.GetByIdAsync<StandardPage>(pageId);
 
-        //    var calendar = Api.Get<TrainingPlanner>("Training/GetTrainingPlanner/" + first.ToString("yyyy-MM-01") + "/" + last.ToString("yyyy-MM-" + last.Day));
+            if (page == null)
+            {
+                return Ok(new
+                {
+                    html = string.Empty
+                });
+            }
 
-        //    model.Calendar = new List<CalendarViewComponent.CalendarDetails>();
+            var calendar = (CalendarBlock)page.Blocks.Where( x=>x.Id == calendarBlockId).FirstOrDefault();
 
-        //    var dayValue = GetNum(DayOfWeek.Monday, first.DayOfWeek, false);
-        //    for (var noDayCount = 1; noDayCount <= dayValue; noDayCount++)
-        //        model.Calendar.Add(new CalendarViewComponent.CalendarDetails
-        //        {
-        //            DateVal = DateTime.MinValue
-        //        });
+            if (calendar == null)
+            {
+                return Ok(new
+                {
+                    html = string.Empty
+                });
+            }
 
-        //    var dayCounter = 1;
-        //    // In the loop below, we minus one off of the total because we a date
-        //    // of, say, 32 Apr 2015 does not exist.
-        //    var calendarCount = dayValue;
-        //    for (; calendarCount <= (last.Day + (dayValue - 1)); calendarCount++)
-        //    {
-        //        var nameCode = string.Empty;
-        //        var calItem = calendar.FindAll(f => f.Training_StartDate.Date == new DateTime(last.Year, last.Month, dayCounter).Date);
+            DateTime theDate;
+            if (!DateTime.TryParse(date, out theDate))
+            {
+                date = DateTime.Now.ToString("yyyy-MM-dd");
+                theDate = DateTime.Now;
+            }
 
-        //        var calDetails = new CalendarViewComponent.CalendarDetails();
-        //        calDetails.DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter);
+            var model = new CalendarViewModel()
+            {
+                MonthName = theDate.ToString("MMM yyyy")
+            };
+            var first = new DateTime(theDate.Year, theDate.Month, 1);
+            var last = first.AddMonths(1).AddDays(-1);
 
-        //        model.Calendar.Add(new CalendarViewComponent.CalendarDetails
-        //        {
-        //            CalItem = new List<CalendarItem>(),
-        //            DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter)
-        //        });
+            List<CalendarDetails> calendarDetails = new();
 
-        //        if (calItem != null && calItem.Count > 0)
-        //        {
-        //            calDetails.CalItem = new List<CalendarItem>();
-        //            // We can only show four items for each day, so if there are
-        //            // more, then we need to show a friendly message.
-        //            var moreAvailable = calItem.Count > TotalCalendarItemsPerDay;
+            if (calendar.Upload.Media != null)
+            {
+                string webRootPath;
+                if (_webHostEnvironment.EnvironmentName == "Development")
+                {
+                    webRootPath = _webHostEnvironment.WebRootPath;
+                }
+                else
+                {
+                    webRootPath = _configuration.GetConnectionString("uploadLocation");
+                }
 
-        //            // We only want to loop for the TotalCalendarItemsPerDay, so if it's
-        //            // greater than that value, constrain the loop to TotalCalendarItemsPerDay.
-        //            var loopCounter = calItem.Count > TotalCalendarItemsPerDay ? TotalCalendarItemsPerDay : calItem.Count;
-        //            for (var calItemCount = 0; calItemCount < loopCounter; calItemCount++)
-        //            {
-        //                model.Calendar[calendarCount].CalItem.Add(new CalendarItem()
-        //                {
-        //                    // MoreAvailable = moreAvailable,
-        //                    Event = calItem[calItemCount].Training_NameCode,
-        //                    Theme = calItem[calItemCount].Training_Colour,
-        //                    Id = calItem[calItemCount].Training_Id
-        //                });
-        //            }
-        //        }
+                ExcelCalendarReader reader = new();
+                calendarDetails = await reader.GetExcelCalendarResults(calendar, webRootPath);
+            }
 
-        //        dayCounter++;
-        //    }
+            model.CalendarDetails = new List<CalendarDetails>();
 
-        //    dayValue = GetNum(DayOfWeek.Sunday, last.DayOfWeek, true);
-        //    for (var noDayCount = calendarCount; noDayCount <= (dayValue - 1); noDayCount++)
-        //        model.Calendar.Add(new CalendarViewComponent.CalendarDetails
-        //        {
-        //            DateVal = DateTime.MinValue
-        //        });
+            var dayValue = GetNum(DayOfWeek.Monday, first.DayOfWeek, false);
+            for (var noDayCount = 1; noDayCount <= dayValue; noDayCount++)
+                model.CalendarDetails.Add(new CalendarDetails
+                {
+                    DateVal = DateTime.MinValue
+                });
 
-        //    var html = string.Empty;
+            var dayCounter = 1;
+            // In the loop below, we minus one off of the total because we a date
+            // of, say, 32 Apr 2015 does not exist.
+            var calendarCount = dayValue;
+            for (; calendarCount <= (last.Day + (dayValue - 1)); calendarCount++)
+            {
+                var nameCode = string.Empty;
+                var calItem = calendarDetails.FindAll(f => f.DateVal == new DateTime(last.Year, last.Month, dayCounter).Date);
 
-        //    var viewName = "Training/_CalendarLarge";
-        //    ViewData.Model = model;
+                var calDetails = new CalendarDetails();
+                calDetails.DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter);
 
-        //    using (StringWriter sw = new StringWriter())
-        //    {
-        //        ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
-        //        ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
-        //        viewResult.View.Render(viewContext, sw);
+                model.CalendarDetails.Add(new CalendarDetails
+                {
+                    CalItem = new List<CalendarItem>(),
+                    DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter)
+                });
 
-        //        html = sw.GetStringBuilder().ToString();
-        //    }
+                if (calItem != null && calItem.Count > 0)
+                {
+                    calDetails.CalItem = new List<CalendarItem>();
+                    // We can only show four items for each day, so if there are
+                    // more, then we need to show a friendly message.
+                    var moreAvailable = calItem.Count > TotalCalendarItemsPerDay;
 
-        //    return Json(new
-        //    {
-        //        PrevMonthName = theDate.AddMonths(-1).ToString("MMM"),
-        //        MonthName = theDate.ToString("MMM yyyy"),
-        //        NextMonthName = theDate.AddMonths(1).ToString("MMM"),
-        //        NextMonth = theDate.AddMonths(1).ToString("yyyy-MM-dd"),
-        //        PrevMonth = theDate.AddMonths(-1).ToString("yyyy-MM-dd"),
-        //        html = html
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
+                    // We only want to loop for the TotalCalendarItemsPerDay, so if it's
+                    // greater than that value, constrain the loop to TotalCalendarItemsPerDay.
+                    var loopCounter = calItem.Count > TotalCalendarItemsPerDay ? TotalCalendarItemsPerDay : calItem.Count;
+                    for (var calItemCount = 0; calItemCount < loopCounter; calItemCount++)
+                    {
+                        foreach(var c in calItem[calItemCount].CalItem)
+                        {
+                            model.CalendarDetails[calendarCount].CalItem.Add(new CalendarItem()
+                            {
+                                // MoreAvailable = moreAvailable,
+                                Title = c.Title,
+                                Theme = c.Theme,
+                                Location= c.Location,
+                                MapPostcode = c.MapPostcode,
+                                Description = c.Description,
+                                Time = c.Time,
+                                Id = c.Id
+                            });
+                        }                        
+                    }
+                }
+
+                dayCounter++;
+            }
+
+            dayValue = GetNum(DayOfWeek.Sunday, last.DayOfWeek, true);
+            for (var noDayCount = calendarCount; noDayCount <= (dayValue - 1); noDayCount++)
+                model.CalendarDetails.Add(new CalendarDetails
+                {
+                    DateVal = DateTime.MinValue
+                });
+
+
+
+
+            var html = await _viewRenderService.RenderToStringAsync("Cms/_Calendar", model.CalendarDetails);
+
+            return Ok(new
+            {
+                PrevMonthName = theDate.AddMonths(-1).ToString("MMM"),
+                MonthName = theDate.ToString("MMM yyyy"),
+                NextMonthName = theDate.AddMonths(1).ToString("MMM"),
+                NextMonth = theDate.AddMonths(1).ToString("yyyy-MM-dd"),
+                PrevMonth = theDate.AddMonths(-1).ToString("yyyy-MM-dd"),
+                html = html
+            });
+       }
 
 
         #region Private methods

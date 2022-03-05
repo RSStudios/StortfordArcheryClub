@@ -10,6 +10,7 @@ using Piranha.AttributeBuilder;
 using Piranha.Data.EF.SQLServer;
 using Piranha.Manager.Editor;
 using StortfordArchers.Models;
+using StortfordArchers.Utils;
 
 namespace StortfordArchers
 {
@@ -24,7 +25,7 @@ namespace StortfordArchers
         /// <param name="configuration">The current configuration</param>
         public Startup(IConfiguration configuration)
         {
-           Configuration = configuration;
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -51,22 +52,22 @@ namespace StortfordArchers
                     db.UseSqlServer(Configuration.GetConnectionString("piranha")));
                 options.UseIdentityWithSeed<IdentitySQLServerDb>(db =>
                     db.UseSqlServer(Configuration.GetConnectionString("piranha")));
-               
+
 
                 //configure db
-               /*  string databasePath = Path.Combine("..", "StortfordArchers.db");
-                services.AddDbContext<Packt.Shared.StortfordArchers>(options =>
-                            options.UseSqlite($"Data Source={databasePath}"));
- */
-               /*  *
-                 * Here you can configure the different permissions
-                 * that you want to use for securing content in the
-                 * application.
-                options.UseSecurity(o =>
-                {
-                    o.UsePermission("WebUser", "Web User");
-                }); */
-                
+                /*  string databasePath = Path.Combine("..", "StortfordArchers.db");
+                 services.AddDbContext<Packt.Shared.StortfordArchers>(options =>
+                             options.UseSqlite($"Data Source={databasePath}"));
+  */
+                /*  *
+                  * Here you can configure the different permissions
+                  * that you want to use for securing content in the
+                  * application.
+                 options.UseSecurity(o =>
+                 {
+                     o.UsePermission("WebUser", "Web User");
+                 }); */
+
 
                 /**
                  * Here you can specify the login url for the front end
@@ -76,7 +77,8 @@ namespace StortfordArchers
                  */
             });
             services.Configure<MailSettingsOptions>(Configuration.GetSection("MailSettings"));
-          //  services.AddPiranhaFileStorage();
+            //  services.AddPiranhaFileStorage();
+            services.AddScoped<IViewRenderService, ViewRenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +92,7 @@ namespace StortfordArchers
             // Initialize Piranha
             App.Init(api);
             App.Blocks.Register<StortfordArchers.Blocks.CardBlock>();
-            App.Blocks.Register<StortfordArchers.Blocks.TextWithImageBlock>();
+            App.Blocks.Register<StortfordArchers.Blocks.TextWithImageBlock>(); 
             App.Blocks.Register<StortfordArchers.Blocks.ExcelBlock>();
             App.Blocks.Register<StortfordArchers.Blocks.CalendarBlock>();
             App.Modules.Manager().Scripts.Add("~/js/custom-blocks.js");
@@ -105,7 +107,7 @@ namespace StortfordArchers
 
             // Configure Tiny MCE
             EditorConfig.FromFile("editorconfig.json");
-           
+
             // Middleware setup
             app.UsePiranha(options =>
             {

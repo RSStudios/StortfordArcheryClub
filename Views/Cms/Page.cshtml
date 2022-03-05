@@ -26,33 +26,35 @@
 }
 else
 {
-  
-     <div class="container text-center large-top-margin">
-            <h1>@Model.Title</h1>
-            @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
-            {
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 lead">
-                        @Html.Raw(Model.Excerpt)
-                    </div>
+
+    <div class="container text-center large-top-margin">
+        <h1>@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
+        {
+            <div class="row justify-content-center">
+                <div class="col-lg-8 lead">
+                    @Html.Raw(Model.Excerpt)
                 </div>
-            }
-        </div>
+            </div>
+        }
+    </div>
 }
 <main>
     @foreach (var block in Model.Blocks)
     {
         if (block.Type == "StortfordArchers.Blocks.CalendarBlock")
         {
-            ;// await Component.InvokeAsync("Calendar", block);
+            <div class="container">
+                @await Component.InvokeAsync("Calendar", new { block, pageId=Model.Id })
+            </div>
         }
         else
         {
             <div class="block @block.CssName()">
                 <div class="container">
-                @Html.DisplayFor(m => block, block.GetType().Name)
+                    @Html.DisplayFor(m => block, block.GetType().Name)
+                </div>
             </div>
-        </div>
         }
     }
 </main>

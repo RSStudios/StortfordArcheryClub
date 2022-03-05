@@ -12,6 +12,8 @@
     <None Include="wwwroot\assets\ArcheryGB_d200.png" />
     <None Include="wwwroot\assets\BowArrow.gif" />
     <None Include="wwwroot\assets\haa-transparent_d200.png" />
+    <None Include="wwwroot\assets\left-arrow-6420.svg" />
+    <None Include="wwwroot\assets\right-arrow-6421.svg" />
   </ItemGroup>
 
   <ItemGroup>

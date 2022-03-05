@@ -1,32 +1,31 @@
-﻿@model IEnumerable<CalendarItem>
+﻿@using StortfordArchers.Models.ViewModels
 
-    @foreach (var item in Model)
-{
-    <div>item.Date</div>
-     <div>item.Event</div>
-      <div>item.Description</div>
-}
-<div class="width-full medium-bottom-margin Theme0Bg">
-    <div class="medium-padding">
-        <div class="float-left"><img id="prev-month-large-calendar" src="/assets/left-arrow-6420.svg" class="small-right-margin" alt="Left arrow icon" style="cursor: pointer;" /></div>
-        <div class="float-left small-top-padding large-right-padding"><span id="prev-month-name" class="text-xlarge ThemeB2 large-right-margin" style="cursor: pointer;"></span></div>
-        <div class="float-left"><span id="month-name" class="ThemeB2 text-header-2 margin-large-right"></span></div>
-        <div class="float-left small-top-padding large-left-padding"><span id="next-month-name" class="text-xlarge ThemeB2" style="cursor: pointer;"></span></div>
-        <div class="float-left"><img id="next-month-large-calendar" class="small-left-margin" src="/assets/right-arrow-6420.svg" alt="Right arrow icon" style="cursor: pointer;" /></div>
+@model CalendarIdViewModel
+
+<script type="module" src="/js/Calendar.js" asp-append-version="true"></script>
+
+
+<div class="width-full medium-bottom-margin  align-center">
+    <div class="medium-padding align-center">
+        <div class="inline-block"><img id="prev-month-large-calendar" src="/assets/left-arrow-6420.svg" class="small-right-margin" width="30px" alt="Left arrow icon" style="cursor: pointer;" /></div>
+        <div class="inline-block small-top-padding large-right-padding"><span id="prev-month-name" class="text-xlarge ThemeB2 large-right-margin" style="cursor: pointer;"></span></div>
+        <div class="inline-block"><span id="month-name" class="ThemeB2 text-header-2 margin-large-right"></span></div>
+        <div class="inline-block small-top-padding large-left-padding"><span id="next-month-name" class="text-xlarge ThemeB2" style="cursor: pointer;"></span></div>
+        <div class="inline-block"><img id="next-month-large-calendar" class="small-left-margin" src="/assets/right-arrow-6421.svg" width="30px" alt="Right arrow icon" style="cursor: pointer;" /></div>
         <div class="float-clear"></div>
         <input id="prev-month-value" type="hidden" value="" />
         <input id="next-month-value" type="hidden" value="" />
-    </div>    
+    </div>
 </div>
 
 <article class="width-full small-bottom-margin large-calendar-header">
     <ul>
-        <li class="ThemeB2Bg margin-medium-right float-left align-center bold">Monday</li>
-        <li class="ThemeB2Bg margin-medium-right float-left align-center bold">Tuesday</li>
-        <li class="ThemeB2Bg margin-medium-right float-left align-center bold">Wednesday</li>
-        <li class="ThemeB2Bg margin-medium-right float-left align-center bold">Thursday</li>
-        <li class="ThemeB2Bg margin-medium-right float-left align-center bold">Friday</li>
-        <li class="ThemeA4Bg margin-medium-right float-left align-center bold">Saturday</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Monday</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Tuesday</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Wednesday</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Thursday</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Friday</li>
+        <li class="ThemeA4Bg medium-right-margin float-left align-center bold">Saturday</li>
         <li class="ThemeA4Bg float-left align-center bold">Sunday</li>
     </ul>
     <section class="float-clear"></section>
@@ -38,6 +37,12 @@
 </div>
 <div class="width-full small-top-padding">
     <div id="large-calendar-placeholder">
-        
     </div>
 </div>
+<input type="hidden" value="@Model.CalendarBlockId" id="calendar-block-id" />
+<input type="hidden" value="@Model.PageId" id="page-id" />
+    <script type="module">
+        import {setupLargeCalendar} from '/js/Calendar.js';
+    setupLargeCalendar();
+    </script>
+

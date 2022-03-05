@@ -16,6 +16,10 @@ a {
         color: darken(#f94c3b, 10%);
     }
 }
+.bold {
+    font-weight:900;
+}
+
 #page-container {
     /* https: //www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c/ */
     position: relative;
@@ -46,6 +50,9 @@ main {
 }
 .medium-padding {
     padding: 10px 10px 10px 10px;
+}
+.large-padding {
+    padding: 15px 15px 15px 15px;
 }
 .medium-bottom-padding {
     padding-bottom: 10px;
@@ -98,6 +105,7 @@ main {
 .large-bottom-margin {
     margin-bottom: 15px;
 }
+
 .button {
     background-color: #c2fbd7;
     border-radius: 100px;
@@ -135,6 +143,12 @@ main {
 .text-xlarge {
     font-size: 140%;
 }
+.text-large {
+    font-size: 120%;
+}
+.text-small {
+    font-size: 80%;
+}
 .width-full {
     width: 100%;
 }
@@ -147,12 +161,21 @@ main {
 .float-left {
     float: left;
 }
+.inline-block {
+    display:inline-block;
+}
 
 .float-clear {
     clear: both;
 }
-
 /* Float end */
+.day-height-large {
+    height: 95px;
+    background-color: #d3d3d3;
+}
+.align-center {
+    text-align: center;
+}
 .large-calendar-header ul, .large-calendar ul {
     list-style-type: none;
     margin: 0;
@@ -171,9 +194,27 @@ main {
 }
 
 .large-calendar-header li, .large-calendar-header li a.colour, .large-calendar li, .large-calendar li a.colour {
-    color: #fff;
+    color: #000;
+}
+.calendar-item {
+    color: #006400;
 }
 
 .large-calendar-header li.last-child, .large-calendar li.last-child {
     margin-right: 0;
+}
+.single-line-ellipsis {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.text-header-2 {
+    font-size: 170%;
+}
+.green {
+    color: #006400;
+}
+.grey-underline {
+    border-bottom: 1px solid #d3d3d3;
 }
