@@ -5,15 +5,12 @@ export function setupLargeCalendar() {
     const nextMonthName = document.getElementById('next-month-name');
     prevMonthName.addEventListener('click', handleLargeCalendarPrevClick);
     nextMonthName.addEventListener('click', handleLargeCalendarNextClick);
+
+    const prevMonth = document.getElementById('prev-month-large-calendar');
+    const nextMonth = document.getElementById('next-month-large-calendar');
+    prevMonth.addEventListener('click', handleLargeCalendarPrevClick);
+    nextMonth.addEventListener('click', handleLargeCalendarNextClick);
     populateLargeCalendar();
-
-        //$("#prev-month-large-calendar, #prev-month-name").off('click').on('click', function () {
-        //    populateLargeCalendar($('#prev-month-value').val());
-        //});
-
-        //$("#next-month-large-calendar, #next-month-name").off('click').on('click', function () {
-        //    populateLargeCalendar($('#next-month-value').val());
-        //});
 }
 
 export function calendarPopUp(e) {
