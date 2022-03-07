@@ -55,6 +55,8 @@ function populateLargeCalendar(dateVal) {
                 });
             }
         }).then(data => {
+            if (data === null) return;
+
             if (data.errors === undefined) {
                 calendarPlaceholder.innerHTML = data.html;
                 monthName.innerHTML = data.monthName;
