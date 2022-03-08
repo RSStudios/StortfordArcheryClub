@@ -37,8 +37,6 @@ function populateLargeCalendar(dateVal) {
     const nextMonthName = document.getElementById('next-month-name');
     const nextMonth = document.getElementById('next-month-value');
 
-    
-
     fetch("/Cms/LargeCalendar?" + new URLSearchParams({date: dateVal, pageId, calendarBlockId}),
         {
             method: 'GET',
@@ -55,7 +53,9 @@ function populateLargeCalendar(dateVal) {
                 });
             }
         }).then(data => {
-            if (data === null) return;
+            spinner.style.display = 'none';
+
+            if (data === null || data === undefined) return;
 
             if (data.errors === undefined) {
                 calendarPlaceholder.innerHTML = data.html;
@@ -63,27 +63,10 @@ function populateLargeCalendar(dateVal) {
                 prevMonthName.innerHTML = data.prevMonthName;
                 nextMonthName.innerHTML = data.nextMonthName;
                 prevMonth.value = data.prevMonth;
-                nextMonth.value = data.nextMonth;
-                spinner.style.display = 'none';
+                nextMonth.value = data.nextMonth;                
                 setupPopUpOnClick();
             }
-        });
-    //$.ajax({
-    //    type: 'GET',
-    //    url: "/Training/LargeCalendar",
-    //    data: { date: dateVal }
-    //}).done(function (data) {
-    //    $('#prev-month-name').html(data.PrevMonthName);
-    //    $('#month-name').html(data.MonthName);
-    //    $('#next-month-name').html(data.NextMonthName);
-    //    $('#prev-month-value').val(data.PrevMonth);
-    //    $('#next-month-value').val(data.NextMonth);
-    //    $('#large-calendar-placeholder').html($.parseHTML(data.html));
-    //    $('.spinner').hide();
-    //    setupClickableLiOnLargeCalendar();
-    //}).error(function (error) {
-    //    $('.spinner').hide();
-    //});
+        }).catch(() => );
 }
 
 function setupPopUpOnClick() {
