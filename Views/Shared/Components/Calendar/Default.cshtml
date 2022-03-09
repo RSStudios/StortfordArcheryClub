@@ -2,10 +2,14 @@
 
 @model CalendarIdViewModel
 
+@if (Model.CalendarBlockId == Guid.Empty || Model.PageId == Guid.Empty)
+{
+    return;
+}
+
 <script type="module" src="/js/Calendar.js" asp-append-version="true"></script>
 
-
-<div class="width-full medium-bottom-margin  align-center">
+<div class="width-full medium-bottom-margin align-center large-calendar">
     <div class="medium-padding align-center">
         <div class="inline-block"><img id="prev-month-large-calendar" src="/assets/left-arrow-6420.svg" class="small-right-margin" width="30px" alt="Left arrow icon" style="cursor: pointer;" /></div>
         <div class="inline-block small-top-padding large-right-padding"><span id="prev-month-name" class="text-xlarge ThemeB2 large-right-margin" style="cursor: pointer;"></span></div>
@@ -20,17 +24,16 @@
 
 <article class="width-full small-bottom-margin large-calendar-header">
     <ul>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Monday</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Tuesday</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Wednesday</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Thursday</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Friday</li>
-        <li class="ThemeA4Bg medium-right-margin float-left align-center bold">Saturday</li>
-        <li class="ThemeA4Bg float-left align-center bold">Sunday</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Mon</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Tue</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Wed</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Thu</li>
+        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Fri</li>
+        <li class="ThemeA4Bg medium-right-margin float-left align-center bold">Sat</li>
+        <li class="ThemeA4Bg float-left align-center bold">Sun</li>
     </ul>
     <section class="float-clear"></section>
 </article>
-
 
 <div class="align-center spinner">
     <img src="/assets/ajax-loader.gif" />
@@ -39,10 +42,12 @@
     <div id="large-calendar-placeholder">
     </div>
 </div>
+
 <input type="hidden" value="@Model.CalendarBlockId" id="calendar-block-id" />
 <input type="hidden" value="@Model.PageId" id="page-id" />
-    <script type="module">
-        import {setupLargeCalendar} from '/js/Calendar.js';
+
+<script type="module">
+    import {setupLargeCalendar} from '/js/Calendar.js';
     setupLargeCalendar();
-    </script>
+</script>
 

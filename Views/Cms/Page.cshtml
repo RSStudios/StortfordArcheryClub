@@ -45,7 +45,7 @@ else
         if (block.Type == "StortfordArchers.Blocks.CalendarBlock")
         {
             <div class="container">
-                @await Component.InvokeAsync("Calendar", new { block, pageId=Model.Id })
+                @await Component.InvokeAsync("Calendar", new { block, pageId = Model.Id })
             </div>
         }
         else

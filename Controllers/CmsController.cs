@@ -450,7 +450,14 @@ namespace StortfordArchers.Controllers
                 }
 
                 ExcelCalendarReader reader = new();
-                calendarDetails = await reader.GetExcelCalendarResults(calendar, webRootPath);
+                try
+                {
+                    calendarDetails = await reader.GetExcelCalendarResults(calendar, webRootPath);
+                }
+                catch
+                {
+
+                }
             }
 
             model.CalendarDetails = new List<CalendarDetails>();

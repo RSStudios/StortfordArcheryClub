@@ -37,13 +37,13 @@ function populateLargeCalendar(dateVal) {
     const nextMonthName = document.getElementById('next-month-name');
     const nextMonth = document.getElementById('next-month-value');
 
-    fetch("/Cms/LargeCalendar?" + new URLSearchParams({date: dateVal, pageId, calendarBlockId}),
+    fetch("/Cms/LargeCalendar?" + new URLSearchParams({ date: dateVal, pageId, calendarBlockId }),
         {
             method: 'GET',
             headers: new Headers({
                 'content-type': 'application/json'
             })
-           
+
         }).then((response) => {
             if (response.status === 200 || response.status === 400) {
                 return response.text().then(function (text) {
@@ -63,10 +63,16 @@ function populateLargeCalendar(dateVal) {
                 prevMonthName.innerHTML = data.prevMonthName;
                 nextMonthName.innerHTML = data.nextMonthName;
                 prevMonth.value = data.prevMonth;
-                nextMonth.value = data.nextMonth;                
+                nextMonth.value = data.nextMonth;
                 setupPopUpOnClick();
             }
-        }).catch(() => );
+        }).catch((error) => {
+            console.error('Error: ', error);
+            spinner.style.display = 'none';
+
+            const calendar = document.getElementById('large-calendar');
+            calendar.style.display = 'none';
+        });
 }
 
 function setupPopUpOnClick() {

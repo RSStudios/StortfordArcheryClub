@@ -9,6 +9,9 @@ namespace StortfordArchers.Models.ViewModels
     {
         public async Task<IViewComponentResult> InvokeAsync(CalendarBlock block, Guid pageId )
         {
+            if (block == null || pageId == Guid.Empty)
+                return View(new CalendarIdViewModel());
+
             return View(new CalendarIdViewModel() { CalendarBlockId = block.Id, PageId = pageId});
         }
     }
