@@ -53,8 +53,10 @@
                 {
                      <div class="small-bottom-margin align-left calendar-item">
                                 <div class="padding-small text-small single-line-ellipsis">
-                          <span  class="calendar-popup" data-date="@Model[count].DateVal.ToString("dd-MMM-yyyy")" data-id="@count">  @Model[count].CalItem.Count   event(s) </span>
-                              </div>
+                            <span  class="calendar-popup" data-date="@Model[count].DateVal.ToString("dd-MMM-yyyy")" data-id="@count">  @Model[count].CalItem.Count  @(Model[count].CalItem.Count() < 2? "event":"events")
+                               
+                                </span>
+                        </div>
                             </div>
                  
                 }
@@ -118,7 +120,7 @@
                  {
                      
                 <div class="row large-bottom-margin dialog-border">
-                    <div class="col-6">
+                    <div class="col-12">
                         <div class="row">
                         <div class= "col-12 text-large bold">Name: @c.Title </div>
                         </div>

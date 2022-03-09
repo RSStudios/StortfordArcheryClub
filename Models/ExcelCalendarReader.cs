@@ -30,16 +30,11 @@ namespace StortfordArchers.Models
 
                 foreach (var dataRow in nonEmptyDataRows)
                 {
+                    calItem = new();
                     //for row number check
                     if (dataRow.RowNumber() > 1)
                     {
-                        var time = string.Empty;
-                        if (DateTime.TryParse(dataRow.Cell(2).Value.ToString(), out DateTime result))
-                            time = result.ToShortTimeString();
-                        else
-                            time = (string)dataRow.Cell(2).Value;
-
-                        calItem.Time = time;
+                        calItem.Time = (string)dataRow.Cell(2).Value;
                         calItem.Title = (string)dataRow.Cell(3).Value;
                         calItem.Description = (string)dataRow.Cell(4).Value;
                         calItem.Location = (string)dataRow.Cell(5).Value;
@@ -53,9 +48,7 @@ namespace StortfordArchers.Models
                         catch { }
                         if (val != DateTime.MinValue)
                         {
-
-
-                            // new date  details
+                            // new date details
                             if (!calendar.Select(s => s.DateVal).Contains(val))
                             {
                                 calDetails = new CalendarDetails

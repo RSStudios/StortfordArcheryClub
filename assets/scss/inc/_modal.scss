@@ -20,6 +20,7 @@
 .dialog-container {
     z-index: 2; /* 1 */
     display: flex; /* 2 */
+   
 }
 
 /**
@@ -48,6 +49,8 @@
     position: relative; /* 2 */
     background-color: white; /* 3 */
     min-width: 40%;
+    overflow-y: auto;
+    max-height: 570px;
 }
 .dialog-border {
     border-bottom: 1px solid #d3d3d3;

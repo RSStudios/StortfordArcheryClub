@@ -505,6 +505,8 @@ footer {
   background-color: white;
   /* 3 */
   min-width: 40%;
+  overflow-y: auto;
+  max-height: 570px;
 }
 
 .dialog-border {
