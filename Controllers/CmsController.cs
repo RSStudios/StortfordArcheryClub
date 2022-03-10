@@ -239,16 +239,16 @@ namespace StortfordArchers.Controllers
                             webRootPath = _configuration.GetConnectionString("uploadLocation");
                         }
 
-                        //try
-                        //{
-                        //    ExcelResultReader reader = new();
-                        //    page.Html = reader.GetExcelResults(uploadItem, webRootPath);
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    page.Html += ex.Message;
-                        //    page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
-                        //}
+                        try
+                        {
+                            ExcelResultReader reader = new();
+                            page.Html = reader.GetExcelResults(uploadItem, webRootPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            page.Html += ex.Message;
+                            page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
+                        }
                     }
                     else
                     {
