@@ -11,6 +11,7 @@ using Piranha.Data.EF.SQLServer;
 using Piranha.Manager.Editor;
 using StortfordArchers.Models;
 using StortfordArchers.Utils;
+using System;
 
 namespace StortfordArchers
 {
@@ -32,6 +33,10 @@ namespace StortfordArchers
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true)
+                .Build();
             // Service setup
             services.AddPiranha(options =>
             {
@@ -48,10 +53,14 @@ namespace StortfordArchers
                 options.UseManager();
                 options.UseTinyMCE();
                 options.UseMemoryCache();
+                //options.UseEF<SQLServerDb>(db =>
+                //    db.UseSqlServer(Configuration.GetConnectionString("piranha")));
+                //options.UseIdentityWithSeed<IdentitySQLServerDb>(db =>
+                //    db.UseSqlServer(Configuration.GetConnectionString("piranha")));
                 options.UseEF<SQLServerDb>(db =>
-                    db.UseSqlServer(Configuration.GetConnectionString("piranha")));
+                db.UseSqlServer(config.GetConnectionString("piranha")));
                 options.UseIdentityWithSeed<IdentitySQLServerDb>(db =>
-                    db.UseSqlServer(Configuration.GetConnectionString("piranha")));
+                    db.UseSqlServer(config.GetConnectionString("piranha")));
 
 
                 //configure db
