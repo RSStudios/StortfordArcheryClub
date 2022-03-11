@@ -17,17 +17,16 @@
         }
         </style>
 
-<article class="large-calendar days-of-months">
+<article class="large-calendar days-of-months month">
     @{
         var ulCounter = 1;
     }
 
     @for (var count = 0; count < Model.Count; count++)
     {
-        var backgroundTheme = Model[count].DateVal == DateTime.MinValue ? string.Empty : "Theme0Bg";
         var htmlValue = (Model[count].DateVal == DateTime.MinValue ? "&nbsp;" : Model[count].DateVal.Day.ToString());
         var nameCodeFound = false;
-        var classNameForValidDayOfMonth = (Model[count].DateVal != DateTime.MinValue) ? "has-valid-day-of-month" : "ThemeA5Bg";
+        var classNameForValidDayOfMonth = (Model[count].DateVal != DateTime.MinValue) ? "has-valid-day-of-month" : "";
         if (Model[count].DateVal != DateTime.MinValue && Model[count].CalItem.Count > 0)
         {
             nameCodeFound = true;
@@ -35,20 +34,13 @@
 
         if (ulCounter == 1)
         {
-            @:<ul>
+            @:<div class="week">
         }
  
-        var lastChild = string.Empty;
-        if (ulCounter % 7 == 0)
-        {
-            // N.B.: We can't use pseduo elements with IE8, so we can't make use of the :last-child.
-            // Therefore, we're haivng to inject the CSS class if we're on the last element.
-            lastChild = "last-child";
-        }
-        <li class="@backgroundTheme medium-right-margin medium-bottom-margin float-left day-height-large @classNameForValidDayOfMonth @lastChild">
-            <section class="medium-left-padding medium-right-padding">
-                <div class="float-left ThemeA1 bold small-bottom-margin">@Html.Raw(htmlValue)</div>
-                <div class="float-clear"></div>
+        <div class="day @classNameForValidDayOfMonth">
+            <section>
+                <div class="bold">@Html.Raw(htmlValue)</div>
+               
                 @if (nameCodeFound)
                 {
                      <div class="small-bottom-margin align-left calendar-item">
@@ -61,11 +53,11 @@
                  
                 }
             </section>
-        </li>
+        </div>
 
         if (ulCounter % 7 == 0)
         {
-            @:</ul>
+            @:</div>
             ulCounter = 1;
         }
         else

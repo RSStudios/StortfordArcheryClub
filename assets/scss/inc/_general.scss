@@ -169,40 +169,11 @@ main {
     clear: both;
 }
 /* Float end */
-.day-height-large {
-    height: 95px;
-    background-color: #d3d3d3;
-}
+
 .align-center {
     text-align: center;
 }
-.large-calendar-header ul, .large-calendar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
 
-.large-calendar-header li, .large-calendar li {
-    width: 134px;
-    padding: 6px 0;
-    border: 0;
-}
-
-.large-calendar li.has-valid-day-of-month {
-    cursor: pointer;
-}
-
-.large-calendar-header li, .large-calendar-header li a.colour, .large-calendar li, .large-calendar li a.colour {
-    color: #000;
-}
-.calendar-item {
-    color: #006400;
-}
-
-.large-calendar-header li.last-child, .large-calendar li.last-child {
-    margin-right: 0;
-}
 .single-line-ellipsis {
     width: 100%;
     white-space: nowrap;

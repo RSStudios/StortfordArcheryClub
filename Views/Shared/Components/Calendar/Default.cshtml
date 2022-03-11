@@ -8,8 +8,8 @@
 }
 
 <script type="module" src="/js/Calendar.js" asp-append-version="true"></script>
-
-<div class="width-full medium-bottom-margin align-center large-calendar">
+<div class= "row">
+<div class="col-12 medium-bottom-margin align-center large-calendar">
     <div class="medium-padding align-center">
         <div class="inline-block"><img id="prev-month-large-calendar" src="/assets/left-arrow-6420.svg" class="small-right-margin" width="30px" alt="Left arrow icon" style="cursor: pointer;" /></div>
         <div class="inline-block small-top-padding large-right-padding"><span id="prev-month-name" class="text-xlarge ThemeB2 large-right-margin" style="cursor: pointer;"></span></div>
@@ -21,28 +21,32 @@
         <input id="next-month-value" type="hidden" value="" />
     </div>
 </div>
+</div>
 
-<article class="width-full small-bottom-margin large-calendar-header">
-    <ul>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Mon</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Tue</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Wed</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Thu</li>
-        <li class="ThemeB2Bg medium-right-margin float-left align-center bold">Fri</li>
-        <li class="ThemeA4Bg medium-right-margin float-left align-center bold">Sat</li>
-        <li class="ThemeA4Bg float-left align-center bold">Sun</li>
-    </ul>
-    <section class="float-clear"></section>
-</article>
+<div class="row" style="max-width:1000px;margin:auto;">
+
+    <div class="col-12 monthHeader weekHeader">
+        <div class="dayHeader align-center bold">Mon</div>
+        <div class="dayHeader align-center bold">Tue</div>
+        <div class="dayHeader align-center bold">Wed</div>
+        <div class="dayHeader align-center bold">Thu</div>
+        <div class="dayHeader align-center bold">Fri</div>
+        <div class="dayHeader align-center bold">Sat</div>
+        <div class="dayHeader align-center bold">Sun</div>
+    </div>
+  </div>
+
+
 
 <div class="align-center spinner">
     <img src="/assets/ajax-loader.gif" />
 </div>
-<div class="width-full small-top-padding">
+<div class="row">
+<div class="col-12">
     <div id="large-calendar-placeholder">
     </div>
 </div>
-
+</div>
 <input type="hidden" value="@Model.CalendarBlockId" id="calendar-block-id" />
 <input type="hidden" value="@Model.PageId" id="page-id" />
 

@@ -1,0 +1,57 @@
+﻿.week, .weekHeader {
+    display: flex;
+    gap:1%;
+    row-gap:1rem;
+    
+}
+
+.day, .dayHeader {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+}
+.monthHeader {
+    margin:auto;
+}
+
+.calendar-item {
+    color: #006400;
+}
+.large-calendar .has-valid-day-of-month {
+    cursor: pointer;
+}
+
+/*.week:first-of-type .day:first-of-type {
+    margin-left: 42.85714%;
+}*/
+
+/*.week:last-of-type .day:last-of-type {
+    margin-right: 14.285%;
+}*/
+
+/* OTHER STYLES */
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: linear-gradient(top, #fad961, #f76d1d);
+    background-attachment: fixed;
+}
+
+.month {
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.week {
+    height: 80px;
+    margin-bottom:1%;
+}
+
+.day {
+    padding: 5px;
+    background-color: #AFE1AF; //#e0fde0;
+    /* box-shadow: -1px -1px #F9A440,*/
+}

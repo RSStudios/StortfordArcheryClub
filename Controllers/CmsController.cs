@@ -520,7 +520,7 @@ namespace StortfordArchers.Controllers
             }
 
             dayValue = GetNum(DayOfWeek.Sunday, last.DayOfWeek, true);
-            for (var noDayCount = calendarCount; noDayCount <= (dayValue - 1); noDayCount++)
+            for (var noDayCount = calendarCount; noDayCount <= (calendarCount + dayValue - 1); noDayCount++)
                 model.CalendarDetails.Add(new CalendarDetails
                 {
                     DateVal = DateTime.MinValue
