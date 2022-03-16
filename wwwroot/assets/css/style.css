@@ -509,8 +509,13 @@ footer {
   color: #006400;
 }
 
-.large-calendar .has-valid-day-of-month {
+.large-calendar .has-valid-day-of-month .calendar-item {
   cursor: pointer;
+}
+
+.calendar-popup:hover {
+  color: red;
+  text-decoration: underline;
 }
 
 /*.week:first-of-type .day:first-of-type {
