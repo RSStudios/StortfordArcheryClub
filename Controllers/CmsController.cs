@@ -256,8 +256,13 @@ namespace StortfordArchers.Controllers
                         page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
                     }
                 }
+                else if (item.Type == "StortfordArchers.Blocks.CalendarBlock")
+                {
+                    page.PageWithTableTypes = Enumerations.PageWithTableTypes.CalendarBlock;
+                    page.CalendarBlock = (CalendarBlock)item;
+                }
 
-                pages.Add(page);
+                    pages.Add(page);
             }
 
             ViewBag.PageWithTableViewModel = pages;
@@ -400,19 +405,8 @@ namespace StortfordArchers.Controllers
         /// <returns></returns>
         public async Task<IActionResult> LargeCalendar(string date, Guid pageId, Guid calendarBlockId)
         {
-
-            var page = await _api.Pages.GetByIdAsync<StandardPage>(pageId);
-
-            if (page == null)
-            {
-                return Ok(new
-                {
-                    html = string.Empty
-                });
-            }
-
-            var calendar = (CalendarBlock)page.Blocks.Where( x=>x.Id == calendarBlockId).FirstOrDefault();
-
+            var calendar = await GetCalendarBlock(pageId, calendarBlockId);
+          
             if (calendar == null)
             {
                 return Ok(new
@@ -510,7 +504,12 @@ namespace StortfordArchers.Controllers
                                 MapPostcode = c.MapPostcode,
                                 Description = c.Description,
                                 Time = c.Time,
-                                Id = c.Id
+                                Id = c.Id,
+                                KeyHolder = c.KeyHolder,
+                                FieldCaptain = c.FieldCaptain,
+                                Round = c.Round,
+                                Coaches = c.Coaches
+
                             });
                         }                        
                     }
@@ -574,6 +573,31 @@ namespace StortfordArchers.Controllers
                 ext = fileName.Substring(fileExtPos, fileName.Length - fileExtPos);
 
             return ext;
+        }
+
+        private async Task<CalendarBlock> GetCalendarBlock(Guid pageId, Guid calendarBlockId)
+        {
+            CalendarBlock calendar = new();
+
+            var page = await _api.Pages.GetByIdAsync<StandardPage>(pageId);
+            PageWithTable tabularpage = new();
+            if (page != null)
+            {
+                calendar = (CalendarBlock)page.Blocks.Where(x => x.Id == calendarBlockId).FirstOrDefault();
+            }
+            else
+            {
+                tabularpage = await _api.Pages.GetByIdAsync<PageWithTable>(pageId);
+                if (tabularpage != null)
+                {
+                    calendar = (CalendarBlock)tabularpage.Blocks.Where(x => x.Id == calendarBlockId).FirstOrDefault();
+                }
+
+            }
+
+            return calendar;
+           
+
         }
         #endregion Private methods
     }

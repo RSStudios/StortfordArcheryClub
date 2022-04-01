@@ -125,6 +125,30 @@
                         <div class="row">
                         <div class= "col-12">Notes: @c.Description </div>
                         </div>
+                           @if(!string.IsNullOrEmpty(c.KeyHolder))
+                        {
+                        <div class="row">
+                          <div class= "col-12">Key Holder: @c.KeyHolder </div>
+                        </div>
+                        }
+                          @if(!string.IsNullOrEmpty(c.FieldCaptain))
+                        {
+                        <div class="row">
+                         <div class= "col-12">Field Captain: @c.FieldCaptain </div>
+                        </div>
+                        }
+                           @if(!string.IsNullOrEmpty(c.Round))
+                        {
+                        <div class="row">
+                         <div class= "col-12">Round: @c.Round </div>
+                        </div>
+                        }
+                           @if(!string.IsNullOrEmpty(c.Coaches))
+                        {
+                        <div class="row">
+                         <div class= "col-12">Field Coaches: @c.Coaches </div>
+                        </div>
+                        }
                         @if(!string.IsNullOrEmpty(c.MapPostcode))
                         {
                             <div class="row large-left-padding">
@@ -133,6 +157,7 @@
                                
                             </div>
                         }
+                       
                     </div>
              </div>
                     }

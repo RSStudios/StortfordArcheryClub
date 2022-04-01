@@ -10,5 +10,7 @@ namespace StortfordArchers.Models.ViewModels
 
        
         public Piranha.Extend.Block Block { get; set; }
+
+        public StortfordArchers.Blocks.CalendarBlock CalendarBlock { get; set; }
     }
 }

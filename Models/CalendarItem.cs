@@ -14,5 +14,9 @@ namespace StortfordArchers.Models
 
         public string Location { get; set; }
         public string MapPostcode { get; set; }
+        public string KeyHolder { get; set; }
+        public string FieldCaptain { get; set; }
+        public string Round { get; set; }
+        public string Coaches { get; set; }
     }
 }

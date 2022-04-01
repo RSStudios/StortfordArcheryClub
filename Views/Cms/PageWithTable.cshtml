@@ -1,4 +1,5 @@
-﻿@using StortfordArchers.Enumerations
+﻿@using StortfordArchers.Blocks
+@using StortfordArchers.Enumerations
 @using StortfordArchers.Models.ViewModels
 @model PageWithTable
 @{
@@ -55,6 +56,12 @@ else
                     @Html.DisplayFor(m => block.Block, block.Block.GetType().Name)
                    </div>
                 </div>
+            </div>
+        }
+        else  if (block.PageWithTableTypes == PageWithTableTypes.CalendarBlock)
+        {
+            <div class="container">
+                @await Component.InvokeAsync("Calendar", new { block = block.CalendarBlock, pageId = Model.Id })
             </div>
         }
         else if (block.PageWithTableTypes == PageWithTableTypes.ExcelBlock)

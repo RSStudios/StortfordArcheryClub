@@ -13,9 +13,7 @@ export function setupLargeCalendar() {
     populateLargeCalendar();
 }
 
-export function calendarPopUp(e) {
-    alert("he");
-}
+
 function handleLargeCalendarPrevClick() {
     const prevMonthValue = document.getElementById('prev-month-value');
     populateLargeCalendar(prevMonthValue.value);
@@ -29,7 +27,7 @@ function populateLargeCalendar(dateVal) {
     $('.spinner').show();
     const pageId = document.getElementById('page-id').value;
     const calendarBlockId = document.getElementById('calendar-block-id').value;
-    const calendarPlaceholder = document.getElementById('large-calendar-placeholder');
+    const calendarPlaceholder = document.querySelector('.large-calendar-placeholder');
     const spinner = document.querySelector('.spinner');
     const monthName = document.getElementById('month-name');
     const prevMonthName = document.getElementById('prev-month-name');
@@ -57,7 +55,7 @@ function populateLargeCalendar(dateVal) {
 
             if (data === null || data === undefined) return;
 
-            if (data.errors === undefined) {
+            if (data.errors === undefined && data.html !== "") {
                 calendarPlaceholder.innerHTML = data.html;
                 monthName.innerHTML = data.monthName;
                 prevMonthName.innerHTML = data.prevMonthName;
@@ -65,6 +63,12 @@ function populateLargeCalendar(dateVal) {
                 prevMonth.value = data.prevMonth;
                 nextMonth.value = data.nextMonth;
                 setupPopUpOnClick();
+            }
+            else {
+                const container = calendarPlaceholder.closest('.container');
+                if (container !== undefined) {
+                    container.style.display = 'none';
+                }
             }
         }).catch((error) => {
             console.error('Error: ', error);

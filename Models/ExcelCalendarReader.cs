@@ -39,6 +39,10 @@ namespace StortfordArchers.Models
                         calItem.Description = (string)dataRow.Cell(4).Value;
                         calItem.Location = (string)dataRow.Cell(5).Value;
                         calItem.MapPostcode = (string)dataRow.Cell(6).Value;
+                        calItem.KeyHolder = (string)dataRow.Cell(7).Value;
+                        calItem.FieldCaptain = (string)dataRow.Cell(8).Value;
+                        calItem.Round = (string)dataRow.Cell(9).Value;
+                        calItem.Coaches = (string)dataRow.Cell(10).Value;
 
                         DateTime val = DateTime.MinValue;
                         try

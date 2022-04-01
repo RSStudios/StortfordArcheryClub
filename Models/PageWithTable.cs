@@ -8,6 +8,7 @@ namespace StortfordArchers.Models
 {
     [PageType(Title = "Tabular", UseBlocks = false)]
     [BlockItemType(typeof(StortfordArchers.Blocks.ExcelBlock))]
+    [BlockItemType(typeof(StortfordArchers.Blocks.CalendarBlock))]
     [BlockItemType( typeof(Piranha.Extend.Blocks.HtmlBlock))]
     [ContentTypeRoute(Title = "Default", Route = "/TabularPage")]
 
