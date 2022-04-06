@@ -1,0 +1,35 @@
+﻿@using StortfordArchers.Models.ViewModels
+
+@model CalendarIdViewModel
+
+@if (Model.CalendarBlockId == Guid.Empty || Model.PageId == Guid.Empty)
+{
+    return;
+}
+
+<div class="row" style="max-width:1000px;margin:auto;">
+
+    <div class="col-12 monthHeader weekHeader">
+        <div class="align-center bold">Upcoming Events</div>
+       
+    </div>
+</div>
+
+<div class="align-center upcoming-spinner">
+    <img src="/assets/ajax-loader.gif" />
+</div>
+
+<div class="row upcoming-events">
+    <div class="col-12">
+        <div class="upcoming-events-placeholder">
+        </div>
+    </div>
+</div>
+<input type="hidden" value="@Model.CalendarBlockId" id="calendar-block-id" />
+<input type="hidden" value="@Model.PageId" id="page-id" />
+
+
+<script type="module">
+    import {setupUpcomingEvents} from '/js/Calendar.js';
+    setupUpcomingEvents();
+</script>

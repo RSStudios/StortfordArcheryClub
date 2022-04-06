@@ -104,6 +104,7 @@ namespace StortfordArchers
             App.Blocks.Register<StortfordArchers.Blocks.TextWithImageBlock>(); 
             App.Blocks.Register<StortfordArchers.Blocks.ExcelBlock>();
             App.Blocks.Register<StortfordArchers.Blocks.CalendarBlock>();
+            App.Blocks.Register<StortfordArchers.Blocks.UpcomingEventsBlock>();
             App.Modules.Manager().Scripts.Add("~/js/custom-blocks.js");
             App.Modules.Manager().Styles.Add("~/assets/css/custom-blocks.css");
             App.MediaTypes.Documents.Add(".xlsx", "application/vnd.ms-excel");

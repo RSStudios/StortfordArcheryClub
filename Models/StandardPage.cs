@@ -6,6 +6,7 @@ namespace StortfordArchers.Models
 {
     [PageType(Title = "Standard page")]
     [BlockItemType(typeof(StortfordArchers.Blocks.TextWithImageBlock))]
+    [BlockItemType(typeof(StortfordArchers.Blocks.UpcomingEventsBlock))]
     [BlockItemType(typeof(Piranha.Extend.Blocks.HtmlBlock))]
     [BlockItemType(typeof(Piranha.Extend.Blocks.ImageBlock))]
     [BlockItemType(typeof(Piranha.Extend.Blocks.ImageGalleryBlock))]

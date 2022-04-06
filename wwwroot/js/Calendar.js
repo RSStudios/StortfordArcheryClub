@@ -93,3 +93,65 @@ function setupPopUpOnClick() {
         });
     });
 }
+/*
+ * Upcoming events
+ */
+export function setupUpcomingEvents() {
+    
+    populateUpcomingEvents();
+}
+function populateUpcomingEvents(dateVal) {
+    $('.spinner').show();
+    const pageId = document.getElementById('page-id').value;
+    const calendarBlockId = document.getElementById('calendar-block-id').value;
+    const upcomingeventsPlaceholder = document.querySelector('.upcoming-events-placeholder');
+    const spinner = document.querySelector('.upcoming-spinner');
+    //const monthName = document.getElementById('month-name');
+    //const prevMonthName = document.getElementById('prev-month-name');
+    //const prevMonth = document.getElementById('prev-month-value');
+    //const nextMonthName = document.getElementById('next-month-name');
+    //const nextMonth = document.getElementById('next-month-value');
+
+    fetch("/Cms/UpcomingEvents?" + new URLSearchParams({ date: dateVal, pageId, calendarBlockId }),
+        {
+            method: 'GET',
+            headers: new Headers({
+                'content-type': 'application/json'
+            })
+
+        }).then((response) => {
+            if (response.status === 200 || response.status === 400) {
+                return response.text().then(function (text) {
+                    const result = text ? JSON.parse(text) : {};
+                    result.statusCode = response.status;
+                    return result;
+                });
+            }
+        }).then(data => {
+            spinner.style.display = 'none';
+
+            if (data === null || data === undefined) return;
+
+            if (data.errors === undefined && data.html !== "") {
+                upcomingeventsPlaceholder.innerHTML = data.html;
+                //monthName.innerHTML = data.monthName;
+                //prevMonthName.innerHTML = data.prevMonthName;
+                //nextMonthName.innerHTML = data.nextMonthName;
+                //prevMonth.value = data.prevMonth;
+                //nextMonth.value = data.nextMonth;
+                //setupPopUpOnClick();
+            }
+            else {
+                const container = calendarPlaceholder.closest('.container');
+                if (container !== undefined) {
+                    container.style.display = 'none';
+                }
+            }
+        }).catch((error) => {
+            console.error('Error: ', error);
+            spinner.style.display = 'none';
+
+            const calendar = document.getElementById('upcoming-events');
+            calendar.style.display = 'none';
+        });
+}

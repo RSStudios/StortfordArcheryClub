@@ -270,134 +270,7 @@ namespace StortfordArchers.Controllers
             return View("~/Views/Cms/PageWithTable.cshtml", model);
         }
 
-        //[Route("/TabularPage")]
-        //public async Task<IActionResult> TabularPagex(Guid id)
-        //{
-        //    var model = await _api.Pages.GetByIdAsync<PageWithTable>(id);
-
-        //    model.TableData = "";
-        //    model.Message = "";
-        //    List<PageWithTableViewModel> pages = new();
-
-
-        //    foreach (var item in model.Blocks)
-        //    {
-        //        PageWithTableViewModel page = new PageWithTableViewModel();
-        //        if (item.Type == "Piranha.Extend.Blocks.HtmlBlock")
-        //        {
-        //            page.PageWithTableTypes = Enumerations.PageWithTableTypes.HtmlBlock;
-        //            page.Block = item;
-        //        }
-        //        if (item.Type == "StortfordArchers.Blocks.ExcelBlock")
-        //        {
-        //            Guid guid = item.Id;
-        //            page.PageWithTableTypes = Enumerations.PageWithTableTypes.ExcelBlock;
-
-        //            var uploadItem = (ExcelBlock)item;
-
-        //            if (uploadItem.Upload.Media != null)
-        //            {
-        //                var url = uploadItem.Upload.Media.PublicUrl.Substring(1).Replace(@"/", @"\");
-
-        //                //check file is excel type
-        //                string ext = GetFileExtension(url);
-        //                if (ext == ".xlsx" || ext == ".xls")
-        //                {
-        //                    string webRootPath;
-        //                    if (_webHostEnvironment.EnvironmentName == "Development")
-        //                    {
-        //                        webRootPath = _webHostEnvironment.WebRootPath;
-        //                    }
-        //                    else
-        //                    {
-        //                        webRootPath = _configuration.GetConnectionString("uploadLocation");
-        //                    }
-
-
-        //                    // string contentRootPath = _webHostEnvironment.ContentRootPath;
-
-        //                    string path = "";
-        //                    path = webRootPath + url;
-
-        //                    try
-        //                    {
-        //                        using (XLWorkbook workBook = new XLWorkbook(path))
-        //                        {
-        //                            //Read the first Sheet from Excel file.
-        //                            IXLWorksheet workSheet = workBook.Worksheet(1);
-
-        //                            //Create a new DataTable.
-        //                            //  DataTable dt = new DataTable();
-        //                            model.TableData = "<table style=\"width:100%\" class=\"tabularContainer\">";
-
-        //                            //Loop through the Worksheet rows.
-        //                            bool firstRow = true;
-        //                            int cellcount;
-        //                            foreach (IXLRow row in workSheet.Rows())
-        //                            {
-        //                                //Use the first row to add column headings to  the Table.
-        //                                if (firstRow)
-        //                                {
-        //                                    cellcount = row.Cells().Count();
-        //                                    model.TableData += "<thead><tr>";
-        //                                    foreach (IXLCell cell in row.Cells())
-        //                                    {
-        //                                        model.TableData += "<th>" + cell.Value + "</th>";
-
-        //                                    }
-        //                                    model.TableData += "</tr></thead><tbody>";
-        //                                    firstRow = false;
-        //                                }
-        //                                else
-        //                                {
-
-        //                                    model.TableData += "<tr>";
-        //                                    int i = 0;
-        //                                    foreach (IXLCell cell in row.Cells())
-        //                                    {
-        //                                        DateTime result;
-        //                                        if (DateTime.TryParse(cell.Value.ToString(), out result))
-        //                                        {
-        //                                            model.TableData += "<td>" + result.ToString("dd/MM/yyyy") + "</td>";
-        //                                        }
-        //                                        else
-        //                                        {
-        //                                            model.TableData += "<td>" + cell.Value.ToString() + "</td>";
-        //                                        }
-        //                                        i++;
-        //                                    }
-        //                                    model.TableData += "</tr>";
-        //                                }
-
-
-        //                            }
-        //                            model.TableData += "</tbody></table>";
-        //                            page.Html = model.TableData;
-        //                        }
-        //                    }
-        //                    catch (Exception ex)
-        //                    {
-        //                        page.Html += ex.Message;
-        //                        page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
-        //                    }
-        //                }
-
-        //            }
-        //            else
-        //            {
-        //                page.Html += "Currently nothing to display for this item";
-        //                page.PageWithTableTypes = Enumerations.PageWithTableTypes.Message;
-        //            }
-        //        }
-        //        pages.Add(page);
-        //    }
-
-
-        //    ViewBag.PageWithTableViewModel = pages;
-
-        //    return View("~/Views/Cms/PageWithTable.cshtml", model);
-        //}
-
+     
         /// <summary>
         /// Calendar
         /// </summary>
@@ -540,6 +413,152 @@ namespace StortfordArchers.Controllers
                 html = html
             });
        }
+
+        /// <summary>
+        /// Upcoming events
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> UpcomingEvents(string date, Guid pageId, Guid calendarBlockId)
+        {
+            var calendar = await GetCalendarBlock(pageId, calendarBlockId);
+
+            if (calendar == null)
+            {
+                return Ok(new
+                {
+                    html = string.Empty
+                });
+            }
+
+            DateTime theDate;
+            if (!DateTime.TryParse(date, out theDate))
+            {
+                date = DateTime.Now.ToString("yyyy-MM-dd");
+                theDate = DateTime.Now;
+            }
+          
+            var model = new CalendarViewModel()
+            {
+                MonthName = theDate.ToString("MMM yyyy")
+            };
+            var first = new DateTime(theDate.Year, theDate.Month, 1);
+            var last = first.AddMonths(12).AddDays(-1);
+
+            List<CalendarDetails> calendarDetails = new();
+
+            if (calendar.Upload.Media != null)
+            {
+                string webRootPath;
+                if (_webHostEnvironment.EnvironmentName == "Development")
+                {
+                    webRootPath = _webHostEnvironment.WebRootPath;
+                }
+                else
+                {
+                    webRootPath = _configuration.GetConnectionString("uploadLocation");
+                }
+
+                ExcelCalendarReader reader = new();
+                try
+                {
+                    calendarDetails = await reader.GetExcelCalendarResults(calendar, webRootPath);
+                }
+                catch
+                {
+
+                }
+            }
+            // get upcoming evevents
+
+             var upcoming = calendarDetails.Where(w => w.DateVal.Date>= theDate.Date).Take(5).ToList();
+
+            //model.CalendarDetails = new List<CalendarDetails>();
+
+            //var dayValue = GetNum(DayOfWeek.Monday, first.DayOfWeek, false);
+            //for (var noDayCount = 1; noDayCount <= dayValue; noDayCount++)
+            //    model.CalendarDetails.Add(new CalendarDetails
+            //    {
+            //        DateVal = DateTime.MinValue
+            //    });
+
+            //var dayCounter = 1;
+            //// In the loop below, we minus one off of the total because we a date
+            //// of, say, 32 Apr 2015 does not exist.
+            //var calendarCount = dayValue;
+            //for (; calendarCount <= (last.Day + (dayValue - 1)); calendarCount++)
+            //{
+            //    var nameCode = string.Empty;
+            //    var calItem = calendarDetails.FindAll(f => f.DateVal == new DateTime(last.Year, last.Month, dayCounter).Date);
+
+            //    var calDetails = new CalendarDetails();
+            //    calDetails.DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter);
+
+            //    model.CalendarDetails.Add(new CalendarDetails
+            //    {
+            //        CalItem = new List<CalendarItem>(),
+            //        DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter)
+            //    });
+
+            //    if (calItem != null && calItem.Count > 0)
+            //    {
+            //        calDetails.CalItem = new List<CalendarItem>();
+            //        // We can only show four items for each day, so if there are
+            //        // more, then we need to show a friendly message.
+            //        var moreAvailable = calItem.Count > TotalCalendarItemsPerDay;
+
+            //        // We only want to loop for the TotalCalendarItemsPerDay, so if it's
+            //        // greater than that value, constrain the loop to TotalCalendarItemsPerDay.
+            //        var loopCounter = calItem.Count > TotalCalendarItemsPerDay ? TotalCalendarItemsPerDay : calItem.Count;
+            //        for (var calItemCount = 0; calItemCount < loopCounter; calItemCount++)
+            //        {
+            //            foreach (var c in calItem[calItemCount].CalItem)
+            //            {
+            //                model.CalendarDetails[calendarCount].CalItem.Add(new CalendarItem()
+            //                {
+            //                    // MoreAvailable = moreAvailable,
+            //                    Title = c.Title,
+            //                    Theme = c.Theme,
+            //                    Location = c.Location,
+            //                    MapPostcode = c.MapPostcode,
+            //                    Description = c.Description,
+            //                    Time = c.Time,
+            //                    Id = c.Id,
+            //                    KeyHolder = c.KeyHolder,
+            //                    FieldCaptain = c.FieldCaptain,
+            //                    Round = c.Round,
+            //                    Coaches = c.Coaches
+
+            //                });
+            //            }
+            //        }
+            //    }
+
+            //    dayCounter++;
+            //}
+
+            //dayValue = GetNum(DayOfWeek.Sunday, last.DayOfWeek, true);
+            //for (var noDayCount = calendarCount; noDayCount <= (calendarCount + dayValue - 1); noDayCount++)
+            //    model.CalendarDetails.Add(new CalendarDetails
+            //    {
+            //        DateVal = DateTime.MinValue
+            //    });
+
+            //upcoming = model.CalendarDetails.Where(w => w.DateVal.Date >= theDate.Date && w.CalItem.Count>0).Take(5).ToList();
+
+
+            var html = await _viewRenderService.RenderToStringAsync("Cms/_UpcomingEvents", upcoming);
+
+            return Ok(new
+            {
+                //PrevMonthName = theDate.AddMonths(-1).ToString("MMM"),
+                //MonthName = theDate.ToString("MMM yyyy"),
+                //NextMonthName = theDate.AddMonths(1).ToString("MMM"),
+                //NextMonth = theDate.AddMonths(1).ToString("yyyy-MM-dd"),
+                //PrevMonth = theDate.AddMonths(-1).ToString("yyyy-MM-dd"),
+                html = html
+            });
+        }
 
 
         #region Private methods
