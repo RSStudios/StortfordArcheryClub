@@ -50,14 +50,14 @@ else
         }
         else if (block.Type == "StortfordArchers.Blocks.UpcomingEventsBlock")
         {
-            var upcomingEvents = Model.Blocks.Where(b => b.Type == "StortfordArchers.Blocks.CalendarBlock").FirstOrDefault();
+          @*  var upcomingEvents = Model.Blocks.Where(b => b.Type == "StortfordArchers.Blocks.CalendarBlock").FirstOrDefault();
             if (upcomingEvents != null)
-            {
+            {*@
 
                 <div class="container">
-                    @await Component.InvokeAsync("UpcomingEvents", new { block = upcomingEvents, pageId = Model.Id })
+                    @await Component.InvokeAsync("UpcomingEvents", new { block = block, pageId = Model.Id })
             </div>
-            }
+           @* }*@
         }
         else
         {

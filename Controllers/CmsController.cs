@@ -319,7 +319,7 @@ namespace StortfordArchers.Controllers
                 ExcelCalendarReader reader = new();
                 try
                 {
-                    calendarDetails = await reader.GetExcelCalendarResults(calendar, webRootPath);
+                    calendarDetails = await reader.GetExcelCalendarResults(calendar.Upload, webRootPath);
                 }
                 catch
                 {
@@ -418,10 +418,11 @@ namespace StortfordArchers.Controllers
         /// Upcoming events
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="calendarBlockId">actually upcoming event block id</param>
         /// <returns></returns>
         public async Task<IActionResult> UpcomingEvents(string date, Guid pageId, Guid calendarBlockId)
         {
-            var calendar = await GetCalendarBlock(pageId, calendarBlockId);
+            var calendar = await GetUpcomingEventsBlock(pageId, calendarBlockId);
 
             if (calendar == null)
             {
@@ -462,7 +463,7 @@ namespace StortfordArchers.Controllers
                 ExcelCalendarReader reader = new();
                 try
                 {
-                    calendarDetails = await reader.GetExcelCalendarResults(calendar, webRootPath);
+                    calendarDetails = await reader.GetExcelCalendarResults(calendar.Upload, webRootPath);
                 }
                 catch
                 {
@@ -473,76 +474,7 @@ namespace StortfordArchers.Controllers
 
              var upcoming = calendarDetails.Where(w => w.DateVal.Date>= theDate.Date).Take(5).ToList();
 
-            //model.CalendarDetails = new List<CalendarDetails>();
-
-            //var dayValue = GetNum(DayOfWeek.Monday, first.DayOfWeek, false);
-            //for (var noDayCount = 1; noDayCount <= dayValue; noDayCount++)
-            //    model.CalendarDetails.Add(new CalendarDetails
-            //    {
-            //        DateVal = DateTime.MinValue
-            //    });
-
-            //var dayCounter = 1;
-            //// In the loop below, we minus one off of the total because we a date
-            //// of, say, 32 Apr 2015 does not exist.
-            //var calendarCount = dayValue;
-            //for (; calendarCount <= (last.Day + (dayValue - 1)); calendarCount++)
-            //{
-            //    var nameCode = string.Empty;
-            //    var calItem = calendarDetails.FindAll(f => f.DateVal == new DateTime(last.Year, last.Month, dayCounter).Date);
-
-            //    var calDetails = new CalendarDetails();
-            //    calDetails.DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter);
-
-            //    model.CalendarDetails.Add(new CalendarDetails
-            //    {
-            //        CalItem = new List<CalendarItem>(),
-            //        DateVal = new DateTime(theDate.Year, theDate.Month, dayCounter)
-            //    });
-
-            //    if (calItem != null && calItem.Count > 0)
-            //    {
-            //        calDetails.CalItem = new List<CalendarItem>();
-            //        // We can only show four items for each day, so if there are
-            //        // more, then we need to show a friendly message.
-            //        var moreAvailable = calItem.Count > TotalCalendarItemsPerDay;
-
-            //        // We only want to loop for the TotalCalendarItemsPerDay, so if it's
-            //        // greater than that value, constrain the loop to TotalCalendarItemsPerDay.
-            //        var loopCounter = calItem.Count > TotalCalendarItemsPerDay ? TotalCalendarItemsPerDay : calItem.Count;
-            //        for (var calItemCount = 0; calItemCount < loopCounter; calItemCount++)
-            //        {
-            //            foreach (var c in calItem[calItemCount].CalItem)
-            //            {
-            //                model.CalendarDetails[calendarCount].CalItem.Add(new CalendarItem()
-            //                {
-            //                    // MoreAvailable = moreAvailable,
-            //                    Title = c.Title,
-            //                    Theme = c.Theme,
-            //                    Location = c.Location,
-            //                    MapPostcode = c.MapPostcode,
-            //                    Description = c.Description,
-            //                    Time = c.Time,
-            //                    Id = c.Id,
-            //                    KeyHolder = c.KeyHolder,
-            //                    FieldCaptain = c.FieldCaptain,
-            //                    Round = c.Round,
-            //                    Coaches = c.Coaches
-
-            //                });
-            //            }
-            //        }
-            //    }
-
-            //    dayCounter++;
-            //}
-
-            //dayValue = GetNum(DayOfWeek.Sunday, last.DayOfWeek, true);
-            //for (var noDayCount = calendarCount; noDayCount <= (calendarCount + dayValue - 1); noDayCount++)
-            //    model.CalendarDetails.Add(new CalendarDetails
-            //    {
-            //        DateVal = DateTime.MinValue
-            //    });
+            
 
             //upcoming = model.CalendarDetails.Where(w => w.DateVal.Date >= theDate.Date && w.CalItem.Count>0).Take(5).ToList();
 
@@ -596,13 +528,15 @@ namespace StortfordArchers.Controllers
 
         private async Task<CalendarBlock> GetCalendarBlock(Guid pageId, Guid calendarBlockId)
         {
+           
             CalendarBlock calendar = new();
 
             var page = await _api.Pages.GetByIdAsync<StandardPage>(pageId);
             PageWithTable tabularpage = new();
             if (page != null)
             {
-                calendar = (CalendarBlock)page.Blocks.Where(x => x.Id == calendarBlockId).FirstOrDefault();
+               calendar = (CalendarBlock)page.Blocks.Where(x => x.Id == calendarBlockId).FirstOrDefault();
+               
             }
             else
             {
@@ -616,6 +550,22 @@ namespace StortfordArchers.Controllers
 
             return calendar;
            
+
+        }
+
+        private async Task<UpcomingEventsBlock> GetUpcomingEventsBlock(Guid pageId, Guid upcomingEventsBlockId)
+        {
+            UpcomingEventsBlock events = new();
+
+            var page = await _api.Pages.GetByIdAsync<StandardPage>(pageId);
+        
+            if (page != null)
+            {
+                 events = (UpcomingEventsBlock)page.Blocks.Where(x => x.Id == upcomingEventsBlockId).FirstOrDefault();
+           
+            }
+           
+            return events;
 
         }
         #endregion Private methods

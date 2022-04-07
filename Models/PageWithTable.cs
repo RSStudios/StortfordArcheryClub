@@ -10,6 +10,7 @@ namespace StortfordArchers.Models
     [BlockItemType(typeof(StortfordArchers.Blocks.ExcelBlock))]
     [BlockItemType(typeof(StortfordArchers.Blocks.CalendarBlock))]
     [BlockItemType( typeof(Piranha.Extend.Blocks.HtmlBlock))]
+    [BlockItemType(typeof(Piranha.Extend.Blocks.SeparatorBlock))]
     [ContentTypeRoute(Title = "Default", Route = "/TabularPage")]
 
     public class PageWithTable : Page<PageWithTable>

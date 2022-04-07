@@ -7,7 +7,7 @@ namespace StortfordArchers.Models.ViewModels
 {
     public class UpcomingEventsViewComponent:ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(CalendarBlock block, Guid pageId)
+        public async Task<IViewComponentResult> InvokeAsync(UpcomingEventsBlock block, Guid pageId)
         {
             if (block == null || pageId == Guid.Empty)
                 return View(new CalendarIdViewModel());

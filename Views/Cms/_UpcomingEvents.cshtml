@@ -5,7 +5,7 @@
      @for (var count = 0; count < Model.Count; count++)
     {
         var htmlValue = (Model[count].DateVal == DateTime.MinValue ? "&nbsp;" : Model[count].DateVal.Day.ToString());
-      <div class="row">
+      <div class="row large-bottom-padding">
           <div class="col-2 bold">@Model[count].DateVal.ToShortDateString()</div>
          
            <div class="col-10">

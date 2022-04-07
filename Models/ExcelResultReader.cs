@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using Piranha.Extend.Fields;
 using StortfordArchers.Blocks;
 using StortfordArchers.Interfaces;
 using StortfordArchers.Models.Calendar;
@@ -11,7 +12,7 @@ namespace StortfordArchers.Models
 {
     public class ExcelResultReader : ExcelReader
     {
-        public override Task<List<CalendarDetails>> GetExcelCalendarResults(CalendarBlock excelblock, string webRootPath)
+        public override Task<List<CalendarDetails>> GetExcelCalendarResults(DocumentField upload, string webRootPath)
         {
             throw new NotImplementedException();
         }

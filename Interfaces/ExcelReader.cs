@@ -11,7 +11,7 @@ namespace StortfordArchers.Interfaces
     {
         public abstract string GetExcelResults(ExcelBlock excelBlock, string webRootPath);
 
-        public abstract Task<List<CalendarDetails>> GetExcelCalendarResults(CalendarBlock excelblock, string webRootPath);
+        public abstract Task<List<CalendarDetails>> GetExcelCalendarResults(DocumentField upload, string webRootPath);
 
         private string GetFileExtension(string fileName)
         {
