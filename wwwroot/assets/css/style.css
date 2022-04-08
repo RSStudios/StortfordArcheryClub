@@ -549,3 +549,34 @@ body {
   background-color: #AFE1AF;
   /* box-shadow: -1px -1px #F9A440,*/
 }
+
+.upcoming-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.upcoming-event {
+  align-items: start;
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #006400;
+  border-radius: 16px;
+  background-color: #f4f0ec;
+  cursor: pointer;
+}
+
+.event-end:last-child hr {
+  display: none;
+}
+
+.event-end hr {
+  margin: 0.5rem;
+  padding: 0;
+}
+
+.upcoming-event-item:hover {
+  color: red;
+  text-decoration: underline;
+}

@@ -134,12 +134,7 @@ function populateUpcomingEvents(dateVal) {
 
             if (data.errors === undefined && data.html !== "") {
                 upcomingeventsPlaceholder.innerHTML = data.html;
-                //monthName.innerHTML = data.monthName;
-                //prevMonthName.innerHTML = data.prevMonthName;
-                //nextMonthName.innerHTML = data.nextMonthName;
-                //prevMonth.value = data.prevMonth;
-                //nextMonth.value = data.nextMonth;
-                //setupPopUpOnClick();
+                setupEventPopUpOnClick();
             }
             else {
                 const container = calendarPlaceholder.closest('.container');
@@ -154,4 +149,24 @@ function populateUpcomingEvents(dateVal) {
             const calendar = document.getElementById('upcoming-events');
             calendar.style.display = 'none';
         });
+}
+function setupEventPopUpOnClick() {
+    document.querySelectorAll('.event-popup').forEach(item => {
+        item.addEventListener('click', el => {
+            let id = el.target.dataset.id;
+            let dt = el.target.dataset.date;
+            if (el.target.dataset.id === undefined) {
+                id = el.target.closest('.upcoming-event').dataset.id;
+                dt = el.target.closest('.upcoming-event').dataset.date;
+            }
+            const theDialog = document.querySelector(`#event-modal`);
+            const template = document.querySelector(`#template-day-id-${id}`);
+            const dialogContent = document.querySelector('#event-modal .content');
+            const dialogEvent = document.querySelector('#events');
+            dialogEvent.innerHTML = `Events for ${dt}`;
+            dialogContent.innerHTML = template.innerHTML;
+            const dialog = new A11yDialog(theDialog);
+            dialog.show();
+        });
+    });
 }
