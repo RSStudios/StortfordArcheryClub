@@ -1,8 +1,8 @@
 ﻿@using StortfordArchers.Models.ViewModels
 
-@model CalendarIdViewModel
+@model UpcomingEventsIdViewModel
 
-@if (Model.CalendarBlockId == Guid.Empty || Model.PageId == Guid.Empty)
+@if (Model.UpcomingEventsBlockId == Guid.Empty || Model.PageId == Guid.Empty)
 {
     return;
 }
@@ -25,7 +25,7 @@
       
     </div>
 </div>
-<input type="hidden" value="@Model.CalendarBlockId" id="calendar-block-id" />
+<input type="hidden" value="@Model.UpcomingEventsBlockId" id="upcoming-events-block-id" />
 <input type="hidden" value="@Model.PageId" id="page-id" />
 
 

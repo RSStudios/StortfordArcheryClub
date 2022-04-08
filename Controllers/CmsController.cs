@@ -418,11 +418,11 @@ namespace StortfordArchers.Controllers
         /// Upcoming events
         /// </summary>
         /// <param name="date"></param>
-        /// <param name="calendarBlockId">actually upcoming event block id</param>
+        /// <param name="upcomingEventsBlockId">actually upcoming event block id</param>
         /// <returns></returns>
-        public async Task<IActionResult> UpcomingEvents(string date, Guid pageId, Guid calendarBlockId)
+        public async Task<IActionResult> UpcomingEvents(string date, Guid pageId, Guid upcomingEventsBlockId)
         {
-            var calendar = await GetUpcomingEventsBlock(pageId, calendarBlockId);
+            var calendar = await GetUpcomingEventsBlock(pageId, upcomingEventsBlockId);
 
             if (calendar == null)
             {
@@ -473,21 +473,12 @@ namespace StortfordArchers.Controllers
             // get upcoming evevents
 
              var upcoming = calendarDetails.Where(w => w.DateVal.Date>= theDate.Date).Take(5).ToList();
-
-            
-
-            //upcoming = model.CalendarDetails.Where(w => w.DateVal.Date >= theDate.Date && w.CalItem.Count>0).Take(5).ToList();
-
-
+           
             var html = await _viewRenderService.RenderToStringAsync("Cms/_UpcomingEvents", upcoming);
 
             return Ok(new
             {
-                //PrevMonthName = theDate.AddMonths(-1).ToString("MMM"),
-                //MonthName = theDate.ToString("MMM yyyy"),
-                //NextMonthName = theDate.AddMonths(1).ToString("MMM"),
-                //NextMonth = theDate.AddMonths(1).ToString("yyyy-MM-dd"),
-                //PrevMonth = theDate.AddMonths(-1).ToString("yyyy-MM-dd"),
+               
                 html = html
             });
         }

@@ -103,7 +103,7 @@ export function setupUpcomingEvents() {
 function populateUpcomingEvents(dateVal) {
     $('.spinner').show();
     const pageId = document.getElementById('page-id').value;
-    const calendarBlockId = document.getElementById('calendar-block-id').value;
+    const upcomingEventsBlockId = document.getElementById('upcoming-events-block-id').value;
     const upcomingeventsPlaceholder = document.querySelector('.upcoming-events-placeholder');
     const spinner = document.querySelector('.upcoming-spinner');
     //const monthName = document.getElementById('month-name');
@@ -112,7 +112,7 @@ function populateUpcomingEvents(dateVal) {
     //const nextMonthName = document.getElementById('next-month-name');
     //const nextMonth = document.getElementById('next-month-value');
 
-    fetch("/Cms/UpcomingEvents?" + new URLSearchParams({ date: dateVal, pageId, calendarBlockId }),
+    fetch("/Cms/UpcomingEvents?" + new URLSearchParams({ date: dateVal, pageId, upcomingEventsBlockId }),
         {
             method: 'GET',
             headers: new Headers({
