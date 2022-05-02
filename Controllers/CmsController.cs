@@ -222,6 +222,11 @@ namespace StortfordArchers.Controllers
                     page.PageWithTableTypes = Enumerations.PageWithTableTypes.HtmlBlock;
                     page.Block = item;
                 }
+                else if (item.Type == "Piranha.Extend.Blocks.SeparatorBlock")
+                {
+                    page.PageWithTableTypes = Enumerations.PageWithTableTypes.SeparatorBlock;
+                    page.Block = item;
+                }
                 else if (item.Type == "StortfordArchers.Blocks.ExcelBlock")
                 {
                     page.PageWithTableTypes = Enumerations.PageWithTableTypes.ExcelBlock;

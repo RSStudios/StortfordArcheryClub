@@ -48,7 +48,7 @@ else
 
     @foreach (PageWithTableViewModel block in pages)
     {
-        if (block.PageWithTableTypes == PageWithTableTypes.HtmlBlock)
+        if (block.PageWithTableTypes == PageWithTableTypes.HtmlBlock || block.PageWithTableTypes == PageWithTableTypes.SeparatorBlock)
         {
             <div class="block @block.Block.CssName()">
                 <div class="row large-top-margin large-bottom-margin medium-right-margin medium-left-margin responsive-container">
