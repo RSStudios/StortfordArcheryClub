@@ -275,7 +275,37 @@ namespace StortfordArchers.Controllers
             return View("~/Views/Cms/PageWithTable.cshtml", model);
         }
 
-     
+        [Route("/EntryForm")]
+        public async Task<IActionResult> EntryForm(Guid id)
+        {
+            var model = await _api.Pages.GetByIdAsync<EntryForm>(id);
+
+           
+            List<PageWithEntryFormViewModel> pages = new();
+
+            foreach (var item in model.Blocks)
+            {
+                PageWithEntryFormViewModel page = new PageWithEntryFormViewModel();
+                if (item.Type == "Piranha.Extend.Blocks.HtmlBlock")
+                {
+                   page.PageWithTableTypes = Enumerations.PageWithTableTypes.HtmlBlock;
+                    page.Block = item;
+                }
+                else if (item.Type == "Piranha.Extend.Blocks.SeparatorBlock")
+                {
+                   page.PageWithTableTypes = Enumerations.PageWithTableTypes.SeparatorBlock;
+                    page.Block = item;
+                }
+                
+                pages.Add(page);
+            }
+
+            ViewBag.PageWithEntryFormViewModel = pages;
+
+            return View("~/Views/Cms/PageWithEntryForm.cshtml", model);
+        }
+
+
         /// <summary>
         /// Calendar
         /// </summary>

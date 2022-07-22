@@ -1,0 +1,239 @@
+﻿@using StortfordArchers.Blocks
+@using StortfordArchers.Enumerations
+@using StortfordArchers.Models.ViewModels
+@model EntryForm
+@{
+    ViewData["Title"] = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title;
+    var hasImage = Model.PrimaryImage.HasValue;
+   List<PageWithEntryFormViewModel> pages = ViewBag.PageWithEntryFormViewModel;
+}
+@section head {
+    @WebApp.MetaTags(Model)
+}
+@if (hasImage)
+{
+
+    <header @(hasImage ? "class=has-image" : "") @(hasImage ? $"style=background-image:url({ @Url.Content(WebApp.Media.ResizeImage(Model.PrimaryImage, 1920, 400)) })" : "")>
+        <div class="dimmer"></div>
+        <div class="container text-center">
+            <h1>@Model.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
+            {
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 lead">
+                        @Html.Raw(Model.Excerpt)
+                    </div>
+                </div>
+            }
+        </div>
+    </header>
+}
+else
+{
+
+    <div class="container text-center large-top-margin">
+        <h1>@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
+        {
+            <div class="row justify-content-center">
+                <div class="col-lg-8 lead">
+                    @Html.Raw(Model.Excerpt)
+                </div>
+            </div>
+        }
+    </div>
+}
+<main>
+
+
+    @foreach (PageWithEntryFormViewModel block in pages)
+    {
+        if (block.PageWithTableTypes == PageWithTableTypes.HtmlBlock || block.PageWithTableTypes == PageWithTableTypes.SeparatorBlock)
+        {
+            <div class="block @block.Block.CssName()">
+                <div class="row large-top-margin large-bottom-margin medium-right-margin medium-left-margin responsive-container">
+                     <div class="col-10">
+                    @Html.DisplayFor(m => block.Block, block.Block.GetType().Name)
+                   </div>
+                </div>
+            </div>
+        }
+       
+        else
+        {
+            <div class="row large-top-margin alignCentre">
+        <div class="col-10 alignCentre">
+            @block.Html
+        </div>
+    </div>
+        }
+    }
+
+    <div class="clearfix"></div>
+    <article class="get-in-touch">
+   <div class="container">
+        <div class= "row">
+            <div class= "col-lg-12">
+        <form>
+            <div class="form large-top-margin">
+                 <div class="row large-bottom-margin">
+                <div class="col-lg-11 footer-title">
+                 <h3>   Entry form </h3>
+                </div>
+            </div>
+            <div class= "row large-bottom-margin">
+                <div class= "col-lg-12">
+                    <table style="width:100%">
+                        <tr>
+                            <th class="text-small">Full name</th>
+                            <th class="text-small">Senior/junior</th>
+                            <th class="text-small">Bow type</th>
+                            <th class="text-small">Distance (Saturday)</th>
+                              <th class="text-small">Distance (Sunday)</th>
+                            <th class="text-small">Junior age at 21/08/2022</th>
+                              <th class="text-small">AGB  Number</th>
+                                <th class="text-small">Fee</th>
+                                  <th class="text-small">Declaration: 'I have received instruction prior to this tournament' archer's signature</th>
+                                    <th class="text-small">Shooting Stool/Chair</th>
+                        </tr>
+                        @{for (int i =0; i< 5; i++)
+
+                           { 
+                               <tr>
+                               <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].EntrantName" style="width:250px;" class="entry-form-item" placeholder="Entrant name" />
+                               </td>
+                                <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].SeniorJunior" style="width:100px;" class="entry-form-item"/>
+                               </td>
+                               <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].Bowtype" style="width:150px;" class="entry-form-item" />
+
+                                  @Html.DropDownListFor(m=>m.EntryItems[i].Bowtype,
+                                  new SelectList(Enum.GetValues(typeof(BowType))),
+                                  "Select bow type")
+                               </td>
+                                <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].DistanceSaturday" style="width:100px;" class="entry-form-item"/>
+                               </td>
+                               <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].DistanceSunday" style="width:100px;" class="entry-form-item"/>
+                               </td>
+                                <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].JuniorAge" style="width:80px;" class="entry-form-item" />
+                               </td>
+                               <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].AGBNumber" style="width:100px;" class="entry-form-item" />
+                               </td>
+                               <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].Fee" style="width:75px;" class="entry-form-item" />
+                               </td>
+                               <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].Declaration" style="width:170px;" class="entry-form-item" />
+                               </td>
+                               <td class= "small-bottom-padding">
+                                  <input asp-for="EntryItems[i].ShootingStoolChair" style="width:250px;" class="entry-form-item" />
+                               </td>
+                              </tr>
+
+                           }
+                       }
+                    </table>
+                </div>
+            </div>
+            <div class="row small-bottom-padding large-top-margin">
+                <div class="col-lg-5">
+                    <div class="row">
+                        <div class="col-md-3 small-bottom-padding">
+                            <label asp-for="ClubName"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="ClubName" style="width:250px;" class="form-item" placeholder="Enter your Club name" />
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-3 small-bottom-padding">
+                            <label asp-for="ContactName"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="ContactName" style="width:250px;" class="form-item" placeholder="Enter a contact name" />
+                        </div>
+                    </div>
+                    <div class="row small-bottom-padding">
+                        <div class="col-md-3">
+                            <label asp-for="Phone"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="Phone" class= "form-item" style="width:250px;" placeholder="Enter phone number" />
+                        </div>
+                    </div>
+                    <div class="row small-bottom-padding">
+                        <div class="col-md-3">
+                            <label asp-for="AddressLine1"></label>
+                        </div>
+                        <div class="col-md-8 small-bottom-padding">
+                            <input asp-for="AddressLine1"  class= "form-item" style="width:250px;" placeholder="Enter address line 1" />
+                        </div>
+                    </div>
+
+                      <div class="row small-bottom-padding">
+                        <div class="col-md-3">
+                            <label asp-for="AddressLine2"></label>
+                        </div>
+                        <div class="col-md-8 small-bottom-padding">
+                            <input asp-for="AddressLine2"  class= "form-item" style="width:250px;" placeholder="Enter address line 2" />
+                        </div>
+                    </div>
+                      <div class="row small-bottom-padding">
+                        <div class="col-md-3">
+                            <label asp-for="AddressLine3"></label>
+                        </div>
+                        <div class="col-md-8 small-bottom-padding">
+                            <input asp-for="AddressLine3"  class= "form-item" style="width:250px;" placeholder="Enter address line 3" />
+                        </div>
+                    </div>
+                      <div class="row small-bottom-padding">
+                        <div class="col-md-3">
+                            <label asp-for="Postcode"></label>
+                        </div>
+                        <div class="col-md-8 small-bottom-padding">
+                            <input asp-for="Postcode"  class= "form-item" style="width:250px;" placeholder="Enter postcode" />
+                        </div>
+                    </div>
+                    <div class="row small-bottom-padding">
+                        <div class="col-md-3">
+                            <label asp-for="Email"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="Email"  class= "form-item" style="width:250px;" placeholder="Enter an email address" />
+                        </div>
+                    </div>
+                </div>
+
+             </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-9">
+                    <input id="send-the-message" type="submit" value="Submit entry"  class="send-message button">
+                </div>
+            </div>
+        </div>
+        </form>
+        </div>
+        </div>
+    </div>
+    </article>
+
+     <div class="row small-bottom-padding">
+        <div class="col-md-10">
+            @Model.Response
+        </div>
+
+    </div>
+</main>
+
+
+
+
+
+
+
